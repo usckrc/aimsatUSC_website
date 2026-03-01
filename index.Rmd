@@ -13,7 +13,7 @@ output:
 
 # Support
 
-**AIMS&#64;USC** is supported by the **USC Office of Research and Innovation** [Research Catalyst Program](https://rii.usc.edu/funding/) focused on Interdisciplinary Artificial Intelligence, and is apart of the collaborative team at the [USC Kidney Research Center](https://keck.usc.edu/kidney-research-center/) and the [Center for Translational Exposomics Research](https://keck.usc.edu/cter/).
+**AIMS&#64;USC** is supported by the **USC Office of Research and Innovation** [Research Catalyst Program](https://rii.usc.edu/funding/) focused on Interdisciplinary Artificial Intelligence, and is part of the collaborative teams at the [USC Kidney Research Center](https://keck.usc.edu/kidney-research-center/) and the [Center for Translational Exposomics Research](https://keck.usc.edu/cter/).
 
 **AIMS&#64;USC** would not have been possible without investments from:
 

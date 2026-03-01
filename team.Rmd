@@ -40,7 +40,7 @@ if (!require("here")) {install.packages("here"); require("here")}
 
 ![](`r here::here("Images", "street.jpg")`)
 
-[Dr. Kelly Street](https://keck.usc.edu/faculty-search/kelly-n-street/) specializes in single-cell genomics and computational biology. Her work focuses on developing and applying advanced analytical methods to dissect cellular heterogeneity in health and disease. At **AIMS&#64;USC**, she supports bioinformatics strategy, method development, and collaborative project design.
+[Dr. Kelly Street](https://keck.usc.edu/faculty-search/kelly-n-street/) specializes in single-cell genomics and computational biology. His work focuses on developing and applying advanced analytical methods to dissect cellular heterogeneity in health and disease. At **AIMS&#64;USC**, he supports bioinformatics strategy, method development, and collaborative project design.
 
 ### Lu Zhang, PhD
 
