@@ -1,0 +1,31 @@
+---
+title: ""
+output:
+  html_document: 
+    toc: yes
+    toc_depth: 3
+    toc_float: true
+layout: page
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r load new packages, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE}
+
+if (!require("here")) {install.packages("here"); require("here")}
+```
+
+# **The Spatial Summit**
+
+**Breakthroughs do not happen in isolation.** They emerge when computational scientists, biologists, clinicians, engineers, and trainees engage directly with one another around shared data and shared challenges. At **AIMS&#64;USC**, we believe that meaningful progress requires stakeholders to be in the same room, examining results together, questioning assumptions, and shaping priorities collaboratively. To foster this environment, we will host periodic **Spatial Summit** meetings which are dedicated forums to present ongoing work, solicit feedback, and define the next strategic directions for spatial research at USC. **The Spatial Summit** will function as an institutional think tank: aligning methodology with biological insight, accelerating translation across disciplines, and ensuring that spatial datasets generated at USC achieve their fullest scientific and clinical impact.
+
+# Summits
+
+## Spatial Summit Meeting 1
+
+### March 18th, 2026 from 2:30 - 4:00 in MMR 608
+
+![](`r here::here("Images", "spatial_summit_1.png")`)

@@ -1,0 +1,33 @@
+name: "AIMS&#64;USC"
+title: "AIMS&#64;USC"
+type: inverse
+left:
+  - text: "The Team"
+    menu:
+      - text: "The Team"
+        href: ./team.html
+
+  - text: "Projects"
+    menu:
+      - text: "Projects"
+        href: ./projects.html
+
+  - text: "The Spatial Summit"
+    menu:
+      - text: "The Spatial Summit"
+        href: ./the_spatial_summit.html
+
+  - text: "Getting Started"
+    menu:
+      - text: "Getting Started"
+        href: ./getting_Started.html
+
+  - text: "News"
+    href: ./news.html
+
+  - text: "Join AIMS@USC"
+    href: ./contact.html
+
+right:
+  - icon: 
+    href: 

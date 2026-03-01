@@ -1,0 +1,51 @@
+---
+title: ""
+output:
+  html_document: 
+    toc: yes
+    toc_depth: 3
+    toc_float: true
+layout: page
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r load new packages, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE}
+
+if (!require("here")) {install.packages("here"); require("here")}
+```
+
+# **Getting Started**
+
+At **AIMS&#64;USC**, dissemination of methods is as important as their development. Advances in spatial analysis only achieve impact when they are transparent, reproducible, and accessible to the broader community—especially investigators who are just beginning to work with spatial datasets. **We are committed to lowering the barrier to entry** by sharing well-documented tutorials, open code, and practical workflows that translate cutting-edge methodology into usable tools. For researchers getting started in spatial analysis, clear guidance can dramatically accelerate learning and prevent common analytical pitfalls. On this page, you will find resources we have developed to streamline adoption of new approaches, promote best practices, and ensure that innovations emerging from **AIMS&#64;USC** rapidly benefit the wider USC research community.
+
+# Topics
+
+## **Spatial Transcriptomics**
+
+### Spatial Transcriptomic Analysis
+#### [Explore the Guide](https://usckrc.github.io/website/SCORE_6__LZ_ST_ppt.pdf)
+
+Spatial transcriptomics bridges molecular profiling with tissue architecture, enabling researchers to study gene expression within its native biological context. This section provides core resources to understand the principles, platforms, and analytical considerations that underpin spatial technologies. Our goal is to equip investigators with both the theoretical framework and practical tools needed to interpret spatial data meaningfully.
+
+### Getting Started with Xenium
+#### [Explore the Guide](https://usckrc.github.io/website/SCORE_7.html)
+
+Designed as a practical onboarding guide, this tutorial walks users through the structure, processing, and exploration of Xenium datasets. From data import to visualization and quality control, it provides a step-by-step roadmap to confidently begin working with high-resolution spatial transcriptomic data.
+
+### Annotating a Xenium Dataset
+#### [Explore the Guide](https://usckrc.github.io/website/SCORE_8.html)
+
+Accurate cell type annotation is central to biological interpretation. This guide outlines strategies for annotating Xenium datasets using marker-based approaches, reference mapping, and integrative methods. It highlights common challenges and emphasizes reproducible workflows to ensure robust and defensible cell type assignments.
+
+### Putting the “Spatial” in Spatial Analysis
+#### [Explore the Guide](https://usckrc.github.io/website/SCORE_9.html)
+
+Spatial datasets are more than expression matrices—they encode physical relationships, tissue architecture, and cellular neighborhoods. This resource focuses on incorporating spatial coordinates into analysis, including neighborhood modeling, spatial statistics, and interaction inference. The aim is to move beyond clustering and fully leverage the contextual information that defines spatial biology.
+
+
+
+

@@ -1,0 +1,61 @@
+---
+title: ""
+output:
+  html_document: 
+    toc: yes
+    toc_depth: 3
+    toc_float: true
+layout: page
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r load new packages, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE}
+
+if (!require("here")) {install.packages("here"); require("here")}
+```
+
+# **The Team**
+
+## **Co-Directors**
+
+### Jesse Goodrich, PhD
+
+![](`r here::here("Images", "goodrich.jpg")`)
+
+[Dr. Jesse Goodrich](https://keck.usc.edu/faculty-search/jesse-a-goodrich/) is an expert in environmental health sciences and molecular epidemiology. His research integrates high-dimensional data analysis with population health to understand how environmental exposures influence disease risk. As Co-Director of **AIMS&#64;USC**, he leads initiatives in data integration, mentorship, and collaborative research development.
+
+### Jonathan Nelson, PhD
+
+![](`r here::here("Images", "nelson.jpg")`)
+
+[Dr. Jonathan Nelson](https://keck.usc.edu/faculty-search/jonathan-nelson/) is a scientist focused on advancing translational biomedical research through integrative omics and spatial technologies. His work bridges experimental models and human disease to uncover mechanisms that drive tissue injury and repair. At **AIMS&#64;USC**, he provides strategic vision and fosters cross-disciplinary collaboration across clinical and computational domains.
+
+## **Team Members**
+
+### Kelly Street, PhD
+
+![](`r here::here("Images", "street.jpg")`)
+
+[Dr. Kelly Street](https://keck.usc.edu/faculty-search/kelly-n-street/) specializes in single-cell genomics and computational biology. Her work focuses on developing and applying advanced analytical methods to dissect cellular heterogeneity in health and disease. At **AIMS&#64;USC**, she supports bioinformatics strategy, method development, and collaborative project design.
+
+### Lu Zhang, PhD
+
+![](`r here::here("Images", "zhang.jpg")`)
+
+[Dr. Lu Zhang](https://keck.usc.edu/faculty-search/lu-zhang/) is a quantitative scientist with expertise in statistical genetics and multi-omics integration. Her research centers on uncovering molecular drivers of complex disease through rigorous modeling and translational application. She contributes to **AIMS&#64;USC** by guiding study design, analytics, and data interpretation.
+
+### Mahyar Khayatkhoei, PhD
+
+![](`r here::here("Images", "khayatkhoei_2.jpg")`)
+
+[Dr. Mahyar Khayatkhoei](https://www.isi.edu/directory/mahyar-khayatkhoei/) is a computational scientist specializing in machine learning, spatial data science, and artificial intelligence–driven modeling of complex systems. His work focuses on developing scalable algorithms and interpretable AI frameworks to extract meaningful patterns from high-dimensional data. He contributes to **AIMS&#64;USC** by advancing methodological innovation, integrating cutting-edge AI approaches, and translating computational insights into impactful biomedical and spatial applications.
+
+### Thomas Kowal, PhD
+
+Dr. Thomas Kowal focuses on computational systems biology and scalable data infrastructure for biomedical research. His work supports reproducible science through advanced pipelines and collaborative platforms. Within **AIMS&#64;USC**, he leads efforts in data engineering, workflow optimization, and research technology support.
+
+

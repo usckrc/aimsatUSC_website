@@ -1,0 +1,34 @@
+---
+title: ""
+output:
+  html_document: 
+    toc: yes
+    toc_depth: 3
+    toc_float: true
+layout: page
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r load new packages, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE}
+
+if (!require("here")) {install.packages("here"); require("here")}
+```
+
+# **AIMS&#64;USC News** 
+
+## **March 1, 2026: Launch of AIMS&#64;USC**
+
+**AIMS&#64;USC** officially launches on March 1, 2026, with generous support from the USC Office of Research and Innovation (OORI). This milestone marks the beginning of a coordinated institutional effort to advance AI-driven methods for spatial analysis across disciplines. With foundational backing from OORI, AIMS&#64;USC is positioned to catalyze innovation, foster cross-campus collaboration, and build shared computational infrastructure that empowers investigators working with complex spatial datasets.
+
+## **March 18, 2026: Inaugural Spatial Summit**
+
+On March 18, 2026, we will convene our first **Spatial Summit**, bringing together computational scientists, experimentalists, clinicians, and trainees to define priorities for spatial research at USC. This inaugural meeting will serve as both a showcase of ongoing projects and a collaborative think tank to shape methodological direction, data standards, and translational opportunities. The Summit represents our commitment to transparency, community engagement, and collective problem-solving as we accelerate progress in spatial science.
+
+## **April 1, 2026: 5th Zilkha Night Presentation**
+
+On April 1, 2026, **AIMS&#64;USC** will present at the 5th Zilkha Night, highlighting early progress, institutional vision, and emerging opportunities in spatial and AI-driven biomedical research. This presentation provides an opportunity to share our mission with a broader audience, celebrate interdisciplinary collaboration, and demonstrate how methodological innovation can directly advance scientific discovery and translational impact across USC.
+

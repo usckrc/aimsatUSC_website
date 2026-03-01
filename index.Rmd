@@ -1,0 +1,26 @@
+---
+title: ""
+output: 
+  html_document:
+    toc: FALSE
+---
+
+# Welcome to **AIMS&#64;USC**
+
+# Mission
+
+**AIMS&#64;USC** ( *AI Methods for Spatial Omics Research at USC* ) is dedicated to developing and applying cutting-edge AI methods for spatial analysis, fostering interdisciplinary collaboration across the University of Southern California to transform how we understand tissues, disease, and regeneration.
+
+# Support
+
+**AIMS&#64;USC** is supported by the **USC Office of Research and Innovation** [Research Catalyst Program](https://rii.usc.edu/funding/) focused on Interdisciplinary Artificial Intelligence, and is apart of the collaborative team at the [USC Kidney Research Center](https://keck.usc.edu/kidney-research-center/) and the [Center for Translational Exposomics Research](https://keck.usc.edu/cter/).
+
+**AIMS&#64;USC** would not have been possible without investments from:
+
+##### [**Southern California Environmental Health Sciences Center**](https://scehsc.org/)
+
+##### [**Southern California Clinical and Translational Science Institute**](https://sc-ctsi.org/)
+
+##### [**Donald E. and Delia B. Baxter Foundation**](https://keck.usc.edu/research-funding/intramural-funding-opportunities/programs-administered-by-ksom/)
+
+
