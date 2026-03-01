@@ -9,7 +9,7 @@ output:
 
 # Mission
 
-**AIMS&#64;USC** ( *AI Methods for Spatial Omics Research at USC* ) is dedicated to developing and applying cutting-edge AI methods for spatial analysis, fostering interdisciplinary collaboration across the University of Southern California to transform how we understand tissues, disease, and regeneration.
+**AIMS&#64;USC** (*AI Methods for Spatial Omics Research at USC* ) is dedicated to developing and applying cutting-edge AI methods for spatial analysis, fostering interdisciplinary collaboration across the University of Southern California to transform how we understand tissues, disease, and regeneration.
 
 # Support
 
