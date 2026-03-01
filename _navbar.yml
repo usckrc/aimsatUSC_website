@@ -20,7 +20,7 @@ left:
   - text: "Getting Started"
     menu:
       - text: "Getting Started"
-        href: ./getting_startedx.html
+        href: ./getting_started.html
 
   - text: "News"
     href: ./news.html
