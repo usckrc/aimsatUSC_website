@@ -58,4 +58,5 @@ if (!require("here")) {install.packages("here"); require("here")}
 
 Dr. Thomas Kowal focuses on computational systems biology and scalable data infrastructure for biomedical research. His work supports reproducible science through advanced pipelines and collaborative platforms. Within **AIMS&#64;USC**, he leads efforts in data engineering, workflow optimization, and research technology support.
 
+Thomas is awesome!
 
