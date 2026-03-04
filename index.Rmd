@@ -5,6 +5,8 @@ output:
     toc: FALSE
 ---
 
+![](`r here::here("Images", "Aims_at_USC for light backgroun.png")`)
+
 # Welcome to **AIMS&#64;USC**
 
 # Mission
