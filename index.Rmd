@@ -5,9 +5,10 @@ output:
     toc: FALSE
 ---
 
-![](`r here::here("Images", "Aims_at_USC for light backgroun.png")`)
-
-# Welcome to **AIMS&#64;USC**
+<div style="text-align: center;">
+![](`r here::here("Images", "Aims_at_USC for light background.png")`){width=75%}
+![](`r here::here("Images", "animated_umap.gif")`){width=50%}
+</div>
 
 # Mission
 

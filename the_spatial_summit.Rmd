@@ -26,6 +26,8 @@ if (!require("here")) {install.packages("here"); require("here")}
 
 ## Spatial Summit Meeting 1
 
+## [Slidedeck](Spatial_Summit_1.pdf)
+
 ### March 18th, 2026 from 2:30 - 4:00 in MMR 608
 
 ![](`r here::here("Images", "spatial_summit_1.png")`)
