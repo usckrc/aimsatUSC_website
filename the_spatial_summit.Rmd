@@ -26,7 +26,8 @@ if (!require("here")) {install.packages("here"); require("here")}
 
 ## Spatial Summit Meeting 1
 
-## [Slidedeck](Spatial_Summit_1.pdf)
+#### [Slidedeck](Spatial_Summit_1.pdf)
+#### [Recording](https://usc.zoom.us/rec/share/DWdoI2vJSjv6mdnU62rv703xefw6-RtegyO_vi8ZWgAQHUvSsfgNRUMvGDT_2_9Z.QvcVxwb1GAtCUzR9)
 
 ### March 18th, 2026 from 2:30 - 4:00 in MMR 608
 
