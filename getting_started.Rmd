@@ -46,6 +46,11 @@ Accurate cell type annotation is central to biological interpretation. This guid
 
 Spatial datasets are more than expression matrices—they encode physical relationships, tissue architecture, and cellular neighborhoods. This resource focuses on incorporating spatial coordinates into analysis, including neighborhood modeling, spatial statistics, and interaction inference. The aim is to move beyond clustering and fully leverage the contextual information that defines spatial biology.
 
+### Xenium Explorer to ggplot
+#### [Explore the Guide](https://usckrc.github.io/website/SCORE_10.html)
+
+Spatial data are often first explored in tools like Xenium Explorer, where cell boundaries, gene expression, and tissue organization can be viewed interactively. This guide focuses on moving those outputs into ggplot, where they can be reshaped, customized, and combined into publication-ready figures. The goal is to preserve the spatial context of the data while gaining much more flexibility in how it is visualized and shared.
+
 
 
 
