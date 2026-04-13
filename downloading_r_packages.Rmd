@@ -46,9 +46,9 @@ From there, an installer will download and guide you through the installation pr
 
 ## Can also install for Linux
 
-## Think of **R as the Car Engine**!
+### **Think of R as the Car Engine**!
 
-# Downloading RStudio
+## Downloading RStudio
 
 R is a computer language that is used by writing commands in the language of R and asking your computer to translate them. The way people use R has changed since it was created. Now most people use R with an application called RStudio which allows access to R in a more user-friendly way. You can download RStudio for free here [RStudio IDE](https://posit.co/downloads/)
 
@@ -56,9 +56,9 @@ R is a computer language that is used by writing commands in the language of R a
 
 ![](`r here::here("images", "downloading_R", "DR_Screenshot 4.png")`)
 
-# Opening RStudio
+## Opening RStudio
 
-## Think of **Rstudio as the Car Chassis**!
+### **Think of Rstudio as the Car Chassis**!
 
 At this point, you should have both R and RStudio on your computer. To begin using R you need to open the RStudio program. Do this just as you would any program, click on its icon or by typing “RStudio” in your application finder.
 
@@ -69,11 +69,9 @@ When you open R you will see four panels which correspond to the R script, R con
 
 In the next section we will learn how to download packages so we can start working with datasets!
 
-# Intro to Packages 
+# Installing packages
 
 Packages are collections of functions that help users perform specific tasks. They are useful for visualization, statistical analysis, data manipulation, reproducibility, and even bioinformatics itself. For this example, you will learn how to install **ggplot2** which is used for advanced plot creation as well as **dplyr** which is used for cleaning and transforming data. 
-
-# Installing packages
 
 ## Step 1: Download the package
 
@@ -91,7 +89,7 @@ To run many lines of code press the number to the left of at the start of the se
 
 ![](`r here::here("images", "using_packages", "PG_Screenshot 2.png")`)
 
-# Verfying packages  
+## Verfying packages  
 
 There are a number of steps to take to verify you have successfully downloaded a package. The first marker that you are on the right path is when you get this message in the R console.
 
@@ -109,11 +107,11 @@ Some packages you cannot access from R and will have to be obtained from outside
 
 ![](`r here::here("images", "using_packages", "PG_Screenshot 5.png")`)
 
-# Packages to Install
+# **Now It's Your Turn!**
 
-# Copy and Paste These Lines into an R script file
+## Copy and Paste These Lines into an R script file
 
-## Once installed, you don’t have to do it again (until you update R)
+### Once installed, you don’t have to do it again (until you update R)
 
 ```{r, eval=FALSE, echo=TRUE, warning=FALSE, error=FALSE, message=FALSE}
 
@@ -145,6 +143,8 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
   geom_smooth(method = "lm")
 
 ```
+
+## If you Downloaded R/Rstudio/Packages correctly. You should see the output above!
 
 ## Common failure signals:
 
