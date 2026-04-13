@@ -24,6 +24,10 @@ At **AIMS&#64;USC**, dissemination of methods is as important as their developme
 
 # Topics
 
+## **Downloading and Installing R and R Studio**
+
+#### [Explore the Guide](downloading_r_packages.html)
+
 ## **Spatial Transcriptomics**
 
 ### Spatial Transcriptomic Analysis

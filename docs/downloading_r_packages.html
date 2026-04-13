@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Sienna Blanche and Jonathan Nelson" />
+
+<meta name="date" content="2026-04-12" />
+
+<title>Downloading R</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="mystyle.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">AIMS&#64;USC</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    The Team
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./team.html">The Team</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Projects
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./projects.html">Projects</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    The Spatial Summit
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./the_spatial_summit.html">The Spatial Summit</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Getting Started
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./getting_started.html">Getting Started</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="./news.html">News</a>
+</li>
+<li>
+  <a href="./contact.html">Join AIMS@USC</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a></a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Downloading R</h1>
+<h4 class="author">Sienna Blanche and Jonathan Nelson</h4>
+<h4 class="date">12 April 2026</h4>
+
+</div>
+
+
+<div id="welcome-to-the-world-of-bioinformatics" class="section level1">
+<h1>Welcome to the World of Bioinformatics</h1>
+<p>Welcome to your bioinformatics journey! Whether you’re a biologist
+looking to analyze large datasets or a programmer diving into biological
+data, mastering bioinformatics can unlock powerful insights. This site
+is designed to help you get started with R, one of the most widely used
+tools in bioinformatics. This site will guide you through the basics
+using hands-on examples and clear explanations. Our goal is to make
+bioinformatics more accessible and help you build confidence in working
+with biological data. Let’s start exploring the world of bioinformatics
+together!</p>
+</div>
+<div id="downloading-r" class="section level1">
+<h1>Downloading R</h1>
+<p>To start having fun with R, you need your own copy. You can download
+R for Mac, Windows, and Linux for free with this website: <a
+href="https://cran.r-project.org/">The Comprehensive R Archive
+Network</a>. The top of the webpage has three links for each operating
+system. Below are detailed instructions for installation.</p>
+<div id="mac" class="section level2">
+<h2>Mac</h2>
+<p>First click “Download R for macOS”</p>
+<p><img
+src="images/downloading_R/DR_Screenshot%201.png" /></p>
+<p>Next click on the most up-to-date package link. At the time of the
+creation of this website, the most current release of R is R 4.4.2 “Pile
+of Leaves”.</p>
+<p><img
+src="images/downloading_R/DR_Screenshot%202.png" /></p>
+<p>From there, an installer will download and guide you through the
+installation process. Once downloaded you can find R in your
+applications folder.</p>
+</div>
+<div id="can-also-install-for-windows" class="section level2">
+<h2>Can also install for Windows</h2>
+</div>
+<div id="can-also-install-for-linux" class="section level2">
+<h2>Can also install for Linux</h2>
+</div>
+<div id="think-of-r-as-the-car-engine" class="section level2">
+<h2>Think of <strong>R as the Car Engine</strong>!</h2>
+</div>
+</div>
+<div id="downloading-rstudio" class="section level1">
+<h1>Downloading RStudio</h1>
+<p>R is a computer language that is used by writing commands in the
+language of R and asking your computer to translate them. The way people
+use R has changed since it was created. Now most people use R with an
+application called RStudio which allows access to R in a more
+user-friendly way. You can download RStudio for free here <a
+href="https://posit.co/downloads/">RStudio IDE</a></p>
+<p><img
+src="images/downloading_R/DR_Screenshot%203.png" /></p>
+<p><img
+src="images/downloading_R/DR_Screenshot%204.png" /></p>
+</div>
+<div id="opening-rstudio" class="section level1">
+<h1>Opening RStudio</h1>
+<div id="think-of-rstudio-as-the-car-chassis" class="section level2">
+<h2>Think of <strong>Rstudio as the Car Chassis</strong>!</h2>
+<p>At this point, you should have both R and RStudio on your computer.
+To begin using R you need to open the RStudio program. Do this just as
+you would any program, click on its icon or by typing “RStudio” in your
+application finder.</p>
+<p>When you open R you will see four panels which correspond to the R
+script, R console, Environment, and Plots.</p>
+<p><img
+src="images/downloading_R/DR_Screenshot%205.png" /></p>
+<p>In the next section we will learn how to download packages so we can
+start working with datasets!</p>
+</div>
+</div>
+<div id="intro-to-packages" class="section level1">
+<h1>Intro to Packages</h1>
+<p>Packages are collections of functions that help users perform
+specific tasks. They are useful for visualization, statistical analysis,
+data manipulation, reproducibility, and even bioinformatics itself. For
+this example, you will learn how to install <strong>ggplot2</strong>
+which is used for advanced plot creation as well as
+<strong>dplyr</strong> which is used for cleaning and transforming
+data.</p>
+</div>
+<div id="installing-packages" class="section level1">
+<h1>Installing packages</h1>
+<div id="step-1-download-the-package" class="section level2">
+<h2>Step 1: Download the package</h2>
+<div id="step-1a-download-one-package" class="section level3">
+<h3>Step 1a: Download one package</h3>
+<p>There are many ways to download a package. The easiest and most
+straight forward way to do so is by using the
+<strong>install.packages</strong> function. This is a base R function
+which means you do not need to load any libraries to use it.</p>
+<p>To download a package using <strong>install.packages</strong> you
+simply need to type it or copy it into your R Script and run it. To run
+a line of code on a Mac click on the number to the left of the line,
+press Command + Enter. For Windows the procedure is the same but you
+should press Control + Enter. In this example I am downloading the
+package <strong>ggplot2</strong>.</p>
+<p><img
+src="images/using_packages/PG_Screenshot%201.png" /></p>
+</div>
+<div id="step-1b-download-multiple-packages" class="section level3">
+<h3>Step 1b: Download multiple packages</h3>
+<p>To run many lines of code press the number to the left of at the
+start of the series of code you want to run then hold and drag to the
+number to the left of the end of the series of code you want to run.
+Alternatively you can click the Run button in the top right corner which
+will run the entire R Script. In this example I am downloading the
+packages <strong>ggplot2</strong> and <strong>dplyr</strong>.</p>
+<p><img
+src="images/using_packages/PG_Screenshot%202.png" /></p>
+</div>
+</div>
+</div>
+<div id="verfying-packages" class="section level1">
+<h1>Verfying packages</h1>
+<p>There are a number of steps to take to verify you have successfully
+downloaded a package. The first marker that you are on the right path is
+when you get this message in the R console.</p>
+<p><img
+src="images/using_packages/PG_Screenshot%203.png" /></p>
+<p>Secondly, you will want to switch from the default
+<strong>Plots</strong> page to the <strong>Packages</strong> page to
+check that the packages has been downloaded. <strong>Packages</strong>
+that have been installed but not loaded in the session will appear
+unchecked in the <strong>Packages</strong> section as seen below.</p>
+<p><img
+src="images/using_packages/PG_Screenshot%204.png" /></p>
+<div id="special-packages" class="section level2">
+<h2>Special Packages</h2>
+<p>Some packages you cannot access from R and will have to be obtained
+from outside sources, like GitHub. For example, the package
+<strong>DoubletFinder</strong> is useful for predicting doublets in
+scRNA-seq data which cleans the data and makes it easier to work with.
+To download a package from GitHub you will access the user’s GitHub page
+and copy the installation command to install.</p>
+<p><code>remotes::install_github('chris-mcginnis-ucsf/DoubletFinder')</code></p>
+<p><img
+src="images/using_packages/PG_Screenshot%205.png" /></p>
+</div>
+</div>
+<div id="packages-to-install" class="section level1">
+<h1>Packages to Install</h1>
+</div>
+<div id="copy-and-paste-these-lines-into-an-r-script-file"
+class="section level1">
+<h1>Copy and Paste These Lines into an R script file</h1>
+<div id="once-installed-you-dont-have-to-do-it-again-until-you-update-r"
+class="section level2">
+<h2>Once installed, you don’t have to do it again (until you update
+R)</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;dplyr&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;ggplot2&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<div id="installation-check" class="section level1">
+<h1>Installation Check</h1>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># Load packages</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co"># Use built-in dataset</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="fu">data</span>(mtcars)</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co"># Simple dplyr check</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>  <span class="fu">group_by</span>(cyl) <span class="sc">%&gt;%</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">avg_mpg =</span> <span class="fu">mean</span>(mpg))</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["cyl"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["avg_mpg"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"4","2":"26.66364"},{"1":"6","2":"19.74286"},{"1":"8","2":"15.10000"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Simple ggplot check</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(<span class="at">x =</span> wt, <span class="at">y =</span> mpg)) <span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>)</span></code></pre></div>
+<p><img src="downloading_r_packages_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<div id="common-failure-signals" class="section level2">
+<h2>Common failure signals:</h2>
+<div id="there-is-no-package-called-dplyr-package-not-installed"
+class="section level3">
+<h3>There is no package called ‘dplyr’ → package not installed</h3>
+</div>
+<div id="could-not-find-function-dplyr-not-loaded"
+class="section level3">
+<h3>Could not find function “%&gt;%” → dplyr not loaded</h3>
+</div>
+<div id="no-plot-appears-ggplot2-issue-or-plotting-pane-problem"
+class="section level3">
+<h3>No plot appears → ggplot2 issue or plotting pane problem</h3>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4,h5",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
