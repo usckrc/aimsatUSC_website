@@ -115,6 +115,20 @@ Some packages you cannot access from R and will have to be obtained from outside
 
 ```{r, eval=FALSE, echo=TRUE, warning=FALSE, error=FALSE, message=FALSE}
 
+install.packages("tibble")
+
+install.packages("viridis")
+
+install.packages("RColorBrewer")
+
+install.packages("readxl")
+
+install.packages("purrr")
+
+install.packages("gt")
+
+install.packages("gtsummary")
+
 install.packages("dplyr")
 
 install.packages("ggplot2")

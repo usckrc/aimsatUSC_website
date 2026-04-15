@@ -1,0 +1,406 @@
+---
+title: "Learning R through IRIS"
+subtitle: "USC Biomedical Student Research Seminar"
+author: "Jonathan Nelson"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 4
+    toc_float: 
+      collapsed: true
+      smooth_scroll: false
+    number_sections: yes
+    theme: bootstrap
+    df_print: paged
+    code_folding: hide
+    highlight: pygments
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+
+
+```{r packages, echo=T, error=FALSE, message=FALSE, warning=FALSE}
+
+library(dplyr)
+library(ggplot2)
+library(tibble)
+library(viridis)
+library(RColorBrewer)
+
+```
+
+# Introduction
+
+This tutorial uses the built-in `iris` dataset to introduce core skills for working with data in R. Rather than focusing on abstract concepts, we will learn by exploring a real dataset step by step.
+
+You will practice using `dplyr` to organize and transform data, helping you focus on the parts of the dataset that matter for your questions. You will then use `ggplot2` to create clear and informative visualizations, building from simple plots to more detailed, multi-dimensional graphics with customized color palettes.
+
+Finally, you will connect these visual patterns to statistical tests, learning how to formally evaluate differences and relationships in the data.
+
+By the end of this tutorial, you should be able to: <br>
+- explore and summarize a dataset <br>
+- reshape and refine data for analysis using `dplyr` <br>
+- create effective visualizations with `ggplot2` <br>
+- apply basic statistical tests and interpret their results <br>
+
+The goal is not just to learn individual tools, but to see how they work together as part of a complete data analysis workflow.
+
+## **Download** this .Rmd file
+
+[**Download RMD file**](learning_r_through_iris.RMD)
+
+## **Read** in the dataset
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+data(iris)
+
+```
+
+## **Inspect** the data
+
+`head` gives the top 6 rows of the dataframe
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+head(iris)
+
+```
+
+## Check the **Structure**
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+str(iris)
+
+```
+
+## Get a **Summary**
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+summary(iris)
+
+```
+
+# Basic `dplyr` summaries
+
+## Count **number** of entries by **Species**
+
+In English: "take the object iris and then count the groups in the column Species"
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+iris %>%
+  count(Species)
+
+```
+### Compute **average measurements** by species
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+iris %>%
+  group_by(Species) %>%
+  summarise(
+    n = n(),
+    avg_sepal_length = mean(Sepal.Length),
+    avg_sepal_width  = mean(Sepal.Width),
+    avg_petal_length = mean(Petal.Length),
+    avg_petal_width  = mean(Petal.Width)
+  )
+
+```
+
+## **Filter** rows
+
+### Look only at `setosa`
+
+In English: "take the object iris and then filter to only include Species = `setosa` rows, and then show the top 6 rows"
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+iris %>%
+  filter(Species == "setosa") %>%
+  head()
+
+```
+
+### Look only at flowers with **large petals**
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+iris %>%
+  filter(Petal.Length > 5, Petal.Width > 1.5) %>%
+  head()
+
+```
+
+## Create **new variables**
+
+In English: "Create the new object `iris2` by starting with the object `iris` and then creating a new column with the name `Petal.Area` that is the value of `Petal.Length * Petal.Width`"
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+iris2 <- iris %>%
+  mutate(Petal.Area = Petal.Length * Petal.Width)
+
+head(iris2)
+
+```
+
+### Create and Summarize
+
+How do you say this in english?
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+iris2 <- iris2 %>%
+  mutate(Sepal.Ratio = Sepal.Length / Sepal.Width)
+
+summary(iris2$Sepal.Ratio)
+
+```
+
+## First **ggplot**: a scatterplot
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point()
+
+```
+
+### **Color** by species
+
+`color = Species`//Also adding **custom plot labels**
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  geom_point(size = 2) +
+  labs(
+    title = "Sepal Length vs Sepal Width",
+    subtitle = "Colored by species",
+    x = "Sepal Length",
+    y = "Sepal Width"
+  )
+
+```
+
+#### Color palette = `RColorBrewer`
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+ggplot(iris, aes(x = Petal.Length, y = Petal.Width, color = Species)) +
+  geom_point(size = 2) +
+  scale_color_brewer(palette = "Dark2") +
+  labs(
+    title = "Petal Dimensions by Species",
+    x = "Petal Length",
+    y = "Petal Width"
+  )
+
+```
+
+#### Colorblind-friendly = `viridis`
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+ggplot(iris, aes(x = Petal.Length, y = Petal.Width, color = Species)) +
+  geom_point(size = 2) +
+  scale_color_viridis_d() +
+  theme_minimal() +
+  labs(
+    title = "Petal Dimensions by Species",
+    x = "Petal Length",
+    y = "Petal Width"
+  )
+```
+
+
+## Multidimensional Plots
+
+### **Going 4D!**
+
+x = Sepal.Length //
+y = Petal.Length //
+color = Species //
+size = Petal.Width
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+ggplot(iris2, aes(
+  x = Sepal.Length,
+  y = Petal.Length,
+  color = Species,
+  size = Petal.Width
+)) +
+  geom_point(alpha = 0.8) +
+  scale_color_viridis_d() +
+  labs(
+    title = "A Multidimensional Plot",
+    subtitle = "Color = species, size = petal width",
+    x = "Sepal Length",
+    y = "Petal Length"
+  ) +
+  theme_minimal()
+
+
+```
+
+## **Faceting** for comparison
+
+`facet_wrap(~Species)`
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center', fig.width=12, fig.height=4}
+
+ggplot(iris, aes(x = Petal.Length, y = Petal.Width)) +
+  geom_point(aes(color = Species), size = 2) +
+  facet_wrap(~Species) +
+  scale_color_viridis_d() +
+  theme_minimal() +
+  labs(
+    title = "Petal Size by Species",
+    x = "Petal Length",
+    y = "Petal Width"
+  )
+
+```
+
+## **Summaries** plus plots
+
+### Calculate the Summary
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+species_summary <- iris %>%
+  group_by(Species) %>%
+  summarise(
+    avg_petal_width = mean(Petal.Width),
+    avg_petal_length = mean(Petal.Length)
+  )
+
+species_summary
+
+```
+
+### Plot the **Summary**
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+ggplot(species_summary, aes(x = Species, y = avg_petal_width, fill = Species)) +
+  geom_col() +
+  scale_fill_viridis_d() +
+  theme_minimal() +
+  labs(
+    title = "Average Petal Width by Species",
+    x = "Species",
+    y = "Average Petal Width"
+  ) +
+  theme(legend.position = "none")
+
+```
+
+# Statistics
+
+## t-test
+
+### Filter to **two variables**
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+iris_two <- iris %>%
+  filter(Species %in% c("setosa", "versicolor"))
+
+t.test(Petal.Length ~ Species, data = iris_two)
+
+```
+
+### **Check the Plot**
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+ggplot(iris_two, aes(x = Species, y = Petal.Length, color = Species)) +
+  geom_point(size = 2) +
+  theme_minimal() +
+  labs(title = "Petal Length by Species")
+
+```
+
+## ANOVA
+
+### For more than two variables
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+anova_model <- aov(Petal.Length ~ Species, data = iris)
+summary(anova_model)
+
+```
+
+### Pairwise comparisons (Tukey HSD)
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+TukeyHSD(anova_model)
+
+```
+
+### **Check the Plot**
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+ggplot(iris, aes(x = Species, y = Petal.Length, color = Species)) +
+  geom_point(size = 2) +
+  theme_minimal() +
+  labs(title = "Petal Length by Species")
+
+```
+
+
+## Correlation
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+cor.test(iris$Petal.Length, iris$Petal.Width)
+
+```
+
+### **Check the Plot**
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+ggplot(iris, aes(x = Petal.Length, y = Petal.Width, color = Species)) +
+  geom_point(size = 2) +
+  theme_minimal() +
+  labs(title = "Petal Length vs Petal Width")
+
+```
+
+
+# Build Your Own Graph
+
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+
+
+```
+
+
+# Session Info
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+Sys.time()
+
+sessionInfo()
+
+```
+

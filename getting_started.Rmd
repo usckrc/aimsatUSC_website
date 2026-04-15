@@ -24,9 +24,22 @@ At **AIMS&#64;USC**, dissemination of methods is as important as their developme
 
 # Topics
 
-## **Downloading and Installing R and R Studio**
+## **R Basics**
 
+### Downloading and Installing R and R Studio
 #### [Explore the Guide](downloading_r_packages.html)
+
+This guide walks through the process of installing R and RStudio, the core tools used for data analysis in bioinformatics and beyond. It provides step-by-step instructions for setting up R across operating systems and introduces RStudio as a user-friendly interface for writing and running code.
+
+Designed for beginners, this section also orients users to the RStudio workspace and its key components. The goal is to ensure a smooth setup experience and prepare learners to begin working with data in R with confidence.
+
+### Learning R Through `iris`
+#### [Explore the Guide](learning_r_through_iris.html)
+
+This tutorial introduces foundational data analysis skills in R using the classic `iris` dataset as a practical, hands-on example. Designed for beginners, it walks through essential workflows including data inspection, transformation with `dplyr`, and visualization with `ggplot2`.
+
+By building from simple summaries to more advanced plots and statistical tests, this guide emphasizes how different tools in R connect within a complete analytical pipeline. The goal is to provide learners with both the technical skills and conceptual understanding needed to explore, visualize, and interpret data effectively.
+
 
 ## **Spatial Transcriptomics**
 
