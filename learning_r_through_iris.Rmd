@@ -53,7 +53,7 @@ The goal is not just to learn individual tools, but to see how they work togethe
 
 ## **Download** this .Rmd file
 
-[**Download RMD file**](learning_r_through_iris.RMD)
+[**Download RMD file**](learning_r_through_iris.Rmd)
 
 ## **Read** in the dataset
 
