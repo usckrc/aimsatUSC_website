@@ -1,0 +1,1090 @@
+---
+title: "Chart Review Table"
+subtitle: "USC Biomedical Student Research Seminar"
+author: "Jonathan Nelson"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 4
+    toc_float: 
+      collapsed: true
+      smooth_scroll: false
+    number_sections: yes
+    theme: bootstrap
+    df_print: paged
+    code_folding: hide
+    highlight: pygments
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+```{r packages, echo=T, error=FALSE, message=FALSE, warning=FALSE}
+
+if (!require("dplyr")) {install.packages("dplyr"); require("dplyr")}
+if (!require("Seurat")) {install.packages("Seurat"); require("Seurat")}
+# if (!require("SeuratDisk")) {install.packages("SeuratDisk"); require("SeuratDisk")}
+if (!require("knitr")) {install.packages("knitr"); require("knitr")}
+if (!require("ggplot2")) {install.packages("ggplot2"); require("ggplot2")}
+if (!requireNamespace('BiocManager', quietly = TRUE)) {install.packages('BiocManager'); require("BiocManager")}
+if (!require("here")) {install.packages("here"); require("here")}
+if (!require("paletteer")) {install.packages("paletteer"); require("paletteer")} # color palette
+if (!require("grDevices")) {install.packages("grDevices"); require("grDevices")} # for grDevices palette
+if (!require("tidyverse")) {install.packages("tidyverse"); require("tidyverse")} # for data frame transformation
+if (!require("tibble")) {install.packages("tibble"); require("tibble")} # for table transformation
+#if (!require("geneName")) {install.packages("geneName"); require("geneName")}
+if (!require("ggrepel")) {install.packages("ggrepel"); require("ggrepel")}
+if (!require("gghighlight")) {install.packages("gghighlight"); require("gghighlight")}
+if (!require("ggpmisc")) {install.packages("ggpmisc"); require("ggpmisc")}
+if (!require("ggupset")) {install.packages("ggupset"); require("ggupset")}
+if (!require("RColorBrewer")) {install.packages("RColorBrewer"); require("RColorBrewer")}
+if (!require("viridis")) {install.packages("viridis"); require("viridis")}
+if (!require("qs")) {install.packages("qs"); require("qs")}
+if (!require("arrow")) {install.packages("arrow"); require("arrow")}
+
+#setRepositories(ind = 1:3, addURLs = c('https://satijalab.r-universe.dev', 'https://bnprks.r-universe.dev/'))
+#install.packages(c("BPCells", "presto", "glmGamPoi"))
+
+#library(SeuratData)
+library(openxlsx)
+library(gplots)
+library(ggvenn)
+library(BPCells)
+library(presto)
+library(glmGamPoi)
+library(readxl)
+
+
+options(future.globals.maxSize = 64 * 1024^3) # 55 GB
+getOption("future.globals.maxSize") #59055800320
+
+```
+
+# Introduction
+
+This code was generated for the **2026 Biomedical Research Seminar** at the University of Southern California by Jonathan Nelson. It creates a descriptive summary table comparing patient, perioperative, pathologic, and postoperative outcomes between surgical approaches, and includes p-values and statistical test labels for each comparison.
+
+The analysis uses a de-identified dataset provided by Sammie Rosen. The dataset includes demographic, clinical, operative, histologic, and follow-up variables collected for patients undergoing **extraperitoneal versus transvesical simple prostatectomy**.
+
+## **Download** the files for this tutorial
+
+[**Download .zip file**](data/chart_review.zip)
+
+## Read in the dataset
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+df <- read_excel("MASTER EP vs TV simples - deidentified.xlsx", sheet = "Sheet1")
+
+df
+
+```
+
+## Name and Factor Table
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+df <- read_excel("MASTER EP vs TV simples - deidentified.xlsx", sheet = "Sheet1") %>%
+  mutate(
+    approach = factor(
+      `Surgical Approach (1=EP or 2=TV)`,
+      levels = c(1, 2),
+      labels = c("Extraperitoneal", "Transvesical")
+    ),
+
+    `HTN status (0=No or 1=Yes)` = factor(`HTN status (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `DM2 status (0=No or 1=Yes)` = factor(`DM2 status (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `HLD (0=No or 1=Yes)` = factor(`HLD (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `prior Inguinal Hernia/pelvic surgery (0=No or 1=Yes)` = factor(`prior Inguinal Hernia/pelvic surgery (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `Prior Abdominal Surgery (0=No or 1=Yes)` = factor(`Prior Abdominal Surgery (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+
+    `Pre-Op Biopsy Done (0=No 1=Yes)` = factor(`Pre-Op Biopsy Done (0=No 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `Pre-Op Biopsy Result (0=Neg 1=Pos)` = factor(`Pre-Op Biopsy Result (0=Neg 1=Pos)`, levels = c(0, 1), labels = c("Negative", "Positive")),
+    `Pre-Op Foley Present (0=No 1=Yes)` = factor(`Pre-Op Foley Present (0=No 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+
+    `Lymph Node Dissection (0=No or 1=Yes)` = factor(`Lymph Node Dissection (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `Conversion (0=No or 1=Yes)` = factor(`Conversion (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `Drain placement (0=No or 1=Yes)` = factor(`Drain placement (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `pRBCs given (0=No 1=Yes)` = factor(`pRBCs given (0=No 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+
+    `LOS (0=Same Day 1=Inpatient)` = factor(`LOS (0=Same Day 1=Inpatient)`, levels = c(0, 1), labels = c("Same Day", "Inpatient")),
+    `Narcotics (PO day 0-1) (0 = no, 1 = yes)` = factor(`Narcotics (PO day 0-1) (0 = no, 1 = yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `30-Day Readmission (0=No or 1=Yes)` = factor(`30-Day Readmission (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `Early Continence at 6 Weeks (0=No or 1=Yes) continent = no pads or 1 protection pad` =
+      factor(`Early Continence at 6 Weeks (0=No or 1=Yes) continent = no pads or 1 protection pad`,
+             levels = c(0, 1), labels = c("No", "Yes")),
+    `Continence 3 Months (0=No or 1=Yes)` = factor(`Continence 3 Months (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `30 day Complications (0=no 1=Yes)` = factor(`30 day Complications (0=no 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+
+    `ASA (1-5)` = factor(`ASA (1-5)`)
+  )
+
+df 
+
+```
+
+## Let's Look at One of the Variables
+
+### Age at time of Surgery
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+df$`Age (at time of surgery)`
+
+```
+
+#### Calculate the Statistic
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+df %>%
+  group_by(approach) %>%
+  summarise(
+    mean_age = mean(`Age (at time of surgery)`, na.rm = TRUE),
+    sd_age   = sd(`Age (at time of surgery)`, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+wilcox.test(`Age (at time of surgery)` ~ approach, data = df)
+
+```
+
+#### Putting It Into a Table
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+library(dplyr)
+library(gt)
+
+# Summary stats
+age_summary <- df %>%
+  group_by(approach) %>%
+  summarise(
+    mean = mean(`Age (at time of surgery)`, na.rm = TRUE),
+    sd   = sd(`Age (at time of surgery)`, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# Format into one row
+age_tbl <- tibble(
+  Variable = "Age (yr)",
+  Extraperitoneal = sprintf("%.1f (%.1f)",
+                            age_summary$mean[age_summary$approach == "Extraperitoneal"],
+                            age_summary$sd[age_summary$approach == "Extraperitoneal"]),
+  Transvesical = sprintf("%.1f (%.1f)",
+                         age_summary$mean[age_summary$approach == "Transvesical"],
+                         age_summary$sd[age_summary$approach == "Transvesical"]),
+  `P-value` = formatC(
+    wilcox.test(`Age (at time of surgery)` ~ approach, data = df)$p.value,
+    format = "f", digits = 3
+  ),
+  Test = "Wilcoxon rank-sum"
+)
+
+age_tbl %>%
+  gt()
+
+```
+
+### Age at time of Surgery
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+df$`Age (at time of surgery)`
+
+```
+
+#### Calculate the Statistic
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+df %>%
+  group_by(approach) %>%
+  summarise(
+    mean_age = mean(`Age (at time of surgery)`, na.rm = TRUE),
+    sd_age   = sd(`Age (at time of surgery)`, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+wilcox.test(`Age (at time of surgery)` ~ approach, data = df)
+
+```
+
+#### Putting It Into a Table
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+library(dplyr)
+library(gt)
+
+# Summary stats
+age_summary <- df %>%
+  group_by(approach) %>%
+  summarise(
+    mean = mean(`Age (at time of surgery)`, na.rm = TRUE),
+    sd   = sd(`Age (at time of surgery)`, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# Format into one row
+age_tbl <- tibble(
+  Variable = "Age (yr)",
+  Extraperitoneal = sprintf("%.1f (%.1f)",
+                            age_summary$mean[age_summary$approach == "Extraperitoneal"],
+                            age_summary$sd[age_summary$approach == "Extraperitoneal"]),
+  Transvesical = sprintf("%.1f (%.1f)",
+                         age_summary$mean[age_summary$approach == "Transvesical"],
+                         age_summary$sd[age_summary$approach == "Transvesical"]),
+  `P-value` = formatC(
+    wilcox.test(`Age (at time of surgery)` ~ approach, data = df)$p.value,
+    format = "f", digits = 3
+  ),
+  Test = "Wilcoxon rank-sum"
+)
+
+age_tbl %>%
+  gt()
+
+```
+
+
+
+## Working Table
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+
+library(readxl)
+library(dplyr)
+library(purrr)
+library(tibble)
+library(gtsummary)
+library(gt)
+
+df <- read_excel("MASTER EP vs TV simples - deidentified.xlsx", sheet = "Sheet1") %>%
+  mutate(
+    approach = factor(
+      `Surgical Approach (1=EP or 2=TV)`,
+      levels = c(1, 2),
+      labels = c("Extraperitoneal", "Transvesical")
+    ),
+
+    `HTN status (0=No or 1=Yes)` = factor(`HTN status (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `DM2 status (0=No or 1=Yes)` = factor(`DM2 status (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `HLD (0=No or 1=Yes)` = factor(`HLD (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `prior Inguinal Hernia/pelvic surgery (0=No or 1=Yes)` = factor(`prior Inguinal Hernia/pelvic surgery (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `Prior Abdominal Surgery (0=No or 1=Yes)` = factor(`Prior Abdominal Surgery (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+
+    `Pre-Op Biopsy Done (0=No 1=Yes)` = factor(`Pre-Op Biopsy Done (0=No 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `Pre-Op Biopsy Result (0=Neg 1=Pos)` = factor(`Pre-Op Biopsy Result (0=Neg 1=Pos)`, levels = c(0, 1), labels = c("Negative", "Positive")),
+    `Pre-Op Foley Present (0=No 1=Yes)` = factor(`Pre-Op Foley Present (0=No 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+
+    `Lymph Node Dissection (0=No or 1=Yes)` = factor(`Lymph Node Dissection (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `Conversion (0=No or 1=Yes)` = factor(`Conversion (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `Drain placement (0=No or 1=Yes)` = factor(`Drain placement (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `pRBCs given (0=No 1=Yes)` = factor(`pRBCs given (0=No 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+
+    `LOS (0=Same Day 1=Inpatient)` = factor(`LOS (0=Same Day 1=Inpatient)`, levels = c(0, 1), labels = c("Same Day", "Inpatient")),
+    `Narcotics (PO day 0-1) (0 = no, 1 = yes)` = factor(`Narcotics (PO day 0-1) (0 = no, 1 = yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `30-Day Readmission (0=No or 1=Yes)` = factor(`30-Day Readmission (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `Early Continence at 6 Weeks (0=No or 1=Yes) continent = no pads or 1 protection pad` =
+      factor(`Early Continence at 6 Weeks (0=No or 1=Yes) continent = no pads or 1 protection pad`,
+             levels = c(0, 1), labels = c("No", "Yes")),
+    `Continence 3 Months (0=No or 1=Yes)` = factor(`Continence 3 Months (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `30 day Complications (0=no 1=Yes)` = factor(`30 day Complications (0=no 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+
+    `ASA (1-5)` = factor(`ASA (1-5)`)
+  )
+
+baseline_labels <- list(
+  `Age (at time of surgery)` ~ "Age (yr)",
+  BMI ~ "BMI (kg/m^2)",
+  CCI ~ "CCI",
+  `ASA (1-5)` ~ "ASA physical status grading",
+  `HTN status (0=No or 1=Yes)` ~ "History of hypertension",
+  `DM2 status (0=No or 1=Yes)` ~ "History of type 2 diabetes mellitus",
+  `HLD (0=No or 1=Yes)` ~ "History of hyperlipidemia",
+  `prior Inguinal Hernia/pelvic surgery (0=No or 1=Yes)` ~ "History of prior inguinal/pelvic surgery",
+  `Prior Abdominal Surgery (0=No or 1=Yes)` ~ "History of prior abdominal surgery",
+  `Pre-op Hgb` ~ "Pre-op Hgb",
+  `Pre-op PSA` ~ "Pre-op PSA (ng/mL)",
+  `Pre-op Prostate Volume (g)` ~ "Prostate volume (ml)"
+)
+
+preop_labels <- list(
+  `SHIM Score (pre-op)` ~ "SHIM",
+  `IPSS (pre-op)` ~ "IPSS",
+  `QOL (pre-op)` ~ "QoL",
+  `Pre-Op Biopsy Done (0=No 1=Yes)` ~ "Biopsy done",
+  `Pre-Op Biopsy Result (0=Neg 1=Pos)` ~ "Malignancy on biopsy",
+  `Pre-Op Foley Present (0=No 1=Yes)` ~ "Pre-op foley placed"
+)
+
+intraop_labels <- list(
+  `Console Time (minutes)` ~ "Console time (minutes)",
+  `Operative Time (minutes)` ~ "Operative time (minutes)",
+  `EBL (cc)` ~ "Estimated blood loss (mL)",
+  `Conversion (0=No or 1=Yes)` ~ "Conversion to multiport",
+  `Lymph Node Dissection (0=No or 1=Yes)` ~ "Lymph node dissection",
+  `Drain placement (0=No or 1=Yes)` ~ "Drain placement",
+  `pRBCs given (0=No 1=Yes)` ~ "Blood units given",
+  `delta Hgb` ~ "dHgb (%)"
+)
+
+histology_labels <- list(
+  `Specimen Weight (g)` ~ "Specimen weight (g)",
+  `Specimen weight/pre-op estmated weight` ~ "Specimen wt/pre-op estimated wt",
+  `Pathologic Diagnosis (incidental malignancy) 0= benign 1= malignant` ~ "Incidental malignancy finding"
+)
+
+postop_care_labels <- list(
+  `LOS (0=Same Day 1=Inpatient)` ~ "Length of stay <24 hours",
+  `LOS (hours) (look at note times)` ~ "Average length of stay (hours)",
+  `Narcotics (PO day 0-1) (0 = no, 1 = yes)` ~ "Narcotics use post-op day 0-1",
+  `Postop Pain Score (PACU)` ~ "Post Op Pain Score",
+  `Foley Duration (Days post-op)` ~ "Foley catheter duration (days)"
+)
+
+outcome_labels <- list(
+  `30 day Complications (0=no 1=Yes)` ~ "30 day postoperative complications (Clavien >=2 only)",
+  `30-Day Readmission (0=No or 1=Yes)` ~ "30 day readmission",
+  `Post-op PVR` ~ "Post-op PVR",
+  `Early Continence at 6 Weeks (0=No or 1=Yes) continent = no pads or 1 protection pad` ~ "Early Continence at 4 weeks",
+  `Continence 3 Months (0=No or 1=Yes)` ~ "Continence at 3 months"
+)
+
+format_p <- function(x) {
+  dplyr::case_when(
+    is.na(x) ~ NA_character_,
+    x < 0.001 ~ "<0.001",
+    TRUE ~ formatC(x, format = "f", digits = 3)
+  )
+}
+
+safe_pvalue <- function(data, group_var, var, continuous = FALSE) {
+  x <- data[[var]]
+  g <- data[[group_var]]
+  keep <- complete.cases(x, g)
+  x <- x[keep]
+  g <- g[keep]
+
+  if (length(unique(g)) < 2) return(NA_real_)
+
+  tryCatch({
+    if (continuous) {
+      wilcox.test(x ~ g)$p.value
+    } else {
+      tab <- table(x, g)
+      if (any(dim(tab) < 2)) return(NA_real_)
+      if (all(dim(tab) == c(2, 2))) {
+        fisher.test(tab)$p.value
+      } else {
+        suppressWarnings(chisq.test(tab, correct = FALSE)$p.value)
+      }
+    }
+  }, error = function(e) NA_real_)
+}
+
+calc_manual_pvals <- function(data, group_var, vars, continuous_vars) {
+  map_dfr(vars, function(v) {
+    tibble(
+      variable = v,
+      manual_p = safe_pvalue(data, group_var, v, continuous = v %in% continuous_vars)
+    )
+  })
+}
+
+attach_manual_pvals <- function(tbl, pvals) {
+  tbl %>%
+    modify_table_body(
+      ~ .x %>%
+        left_join(pvals, by = "variable") %>%
+        mutate(
+          p.value = if_else(
+            row_type == "label",
+            format_p(manual_p),
+            NA_character_
+          )
+        ) %>%
+        select(-manual_p)
+    ) %>%
+    modify_header(p.value ~ "**P-value**") %>%
+    modify_column_unhide(p.value)
+}
+
+make_tbl <- function(data, vars, labels, statistic, continuous_vars) {
+  pvals <- calc_manual_pvals(data, "approach", vars, continuous_vars)
+
+  data %>%
+    select(approach, all_of(vars)) %>%
+    tbl_summary(
+      by = approach,
+      label = labels,
+      statistic = statistic,
+      digits = all_continuous() ~ 1,
+      missing = "ifany"
+    ) %>%
+    attach_manual_pvals(pvals)
+}
+
+baseline_vars <- c(
+  "Age (at time of surgery)", "BMI", "CCI", "ASA (1-5)",
+  "HTN status (0=No or 1=Yes)", "DM2 status (0=No or 1=Yes)", "HLD (0=No or 1=Yes)",
+  "prior Inguinal Hernia/pelvic surgery (0=No or 1=Yes)",
+  "Prior Abdominal Surgery (0=No or 1=Yes)",
+  "Pre-op Hgb", "Pre-op PSA", "Pre-op Prostate Volume (g)"
+)
+baseline_cont <- c(
+  "Age (at time of surgery)", "BMI", "CCI",
+  "Pre-op Hgb", "Pre-op PSA", "Pre-op Prostate Volume (g)"
+)
+
+preop_vars <- c(
+  "SHIM Score (pre-op)", "IPSS (pre-op)", "QOL (pre-op)",
+  "Pre-Op Biopsy Done (0=No 1=Yes)",
+  "Pre-Op Biopsy Result (0=Neg 1=Pos)",
+  "Pre-Op Foley Present (0=No 1=Yes)"
+)
+preop_cont <- c("SHIM Score (pre-op)", "IPSS (pre-op)", "QOL (pre-op)")
+
+intraop_vars <- c(
+  "Console Time (minutes)", "Operative Time (minutes)", "EBL (cc)",
+  "Conversion (0=No or 1=Yes)",
+  "Lymph Node Dissection (0=No or 1=Yes)",
+  "Drain placement (0=No or 1=Yes)",
+  "pRBCs given (0=No 1=Yes)",
+  "delta Hgb"
+)
+intraop_cont <- c("Console Time (minutes)", "Operative Time (minutes)", "EBL (cc)", "delta Hgb")
+
+histology_vars <- c(
+  "Specimen Weight (g)",
+  "Specimen weight/pre-op estmated weight",
+  "Pathologic Diagnosis (incidental malignancy) 0= benign 1= malignant"
+)
+histology_cont <- c("Specimen Weight (g)", "Specimen weight/pre-op estmated weight")
+
+postop_care_vars <- c(
+  "LOS (0=Same Day 1=Inpatient)",
+  "LOS (hours) (look at note times)",
+  "Narcotics (PO day 0-1) (0 = no, 1 = yes)",
+  "Postop Pain Score (PACU)",
+  "Foley Duration (Days post-op)"
+)
+postop_care_cont <- c("LOS (hours) (look at note times)", "Postop Pain Score (PACU)", "Foley Duration (Days post-op)")
+
+outcome_vars <- c(
+  "30 day Complications (0=no 1=Yes)",
+  "30-Day Readmission (0=No or 1=Yes)",
+  "Post-op PVR",
+  "Early Continence at 6 Weeks (0=No or 1=Yes) continent = no pads or 1 protection pad",
+  "Continence 3 Months (0=No or 1=Yes)"
+)
+outcome_cont <- c("Post-op PVR")
+
+baseline_tbl <- make_tbl(
+  df,
+  vars = baseline_vars,
+  labels = baseline_labels,
+  statistic = list(
+    all_continuous() ~ "{mean} ({sd})",
+    `ASA (1-5)` ~ "{n} ({p}%)",
+    all_categorical() ~ "{n} ({p}%)"
+  ),
+  continuous_vars = baseline_cont
+)
+
+preop_tbl <- make_tbl(
+  df,
+  vars = preop_vars,
+  labels = preop_labels,
+  statistic = list(
+    c(`SHIM Score (pre-op)`, `IPSS (pre-op)`, `QOL (pre-op)`) ~ "{median} ({p25}, {p75})",
+    all_categorical() ~ "{n} ({p}%)"
+  ),
+  continuous_vars = preop_cont
+)
+
+intraop_tbl <- make_tbl(
+  df,
+  vars = intraop_vars,
+  labels = intraop_labels,
+  statistic = list(
+    all_continuous() ~ "{mean} ({sd})",
+    all_categorical() ~ "{n} ({p}%)"
+  ),
+  continuous_vars = intraop_cont
+)
+
+histology_tbl <- make_tbl(
+  df,
+  vars = histology_vars,
+  labels = histology_labels,
+  statistic = list(
+    all_continuous() ~ "{mean} ({sd})",
+    all_categorical() ~ "{n} ({p}%)"
+  ),
+  continuous_vars = histology_cont
+)
+
+postop_care_tbl <- make_tbl(
+  df,
+  vars = postop_care_vars,
+  labels = postop_care_labels,
+  statistic = list(
+    `LOS (hours) (look at note times)` ~ "{mean} ({sd})",
+    `Postop Pain Score (PACU)` ~ "{mean} ({sd})",
+    `Foley Duration (Days post-op)` ~ "{median} ({p25}, {p75})",
+    all_categorical() ~ "{n} ({p}%)"
+  ),
+  continuous_vars = postop_care_cont
+)
+
+outcomes_tbl <- make_tbl(
+  df,
+  vars = outcome_vars,
+  labels = outcome_labels,
+  statistic = list(
+    `Post-op PVR` ~ "{median} ({p25}, {p75})",
+    all_categorical() ~ "{n} ({p}%)"
+  ),
+  continuous_vars = outcome_cont
+)
+
+final_tbl <- tbl_stack(
+  tbls = list(
+    baseline_tbl,
+    preop_tbl,
+    intraop_tbl,
+    histology_tbl,
+    postop_care_tbl,
+    outcomes_tbl
+  ),
+  group_header = c(
+    "Baseline characteristics",
+    "Pre-operative variables",
+    "Intraoperative parameters",
+    "Histopathology",
+    "Postoperative care",
+    "Postoperative outcomes"
+  )
+) %>%
+  modify_column_unhide(p.value) %>%
+  bold_labels()
+
+final_tbl
+
+
+```
+
+
+## Table with Stats Info
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+library(readxl)
+library(dplyr)
+library(purrr)
+library(tibble)
+library(gtsummary)
+library(gt)
+
+df <- read_excel("MASTER EP vs TV simples - deidentified.xlsx", sheet = "Sheet1") %>%
+  mutate(
+    approach = factor(
+      `Surgical Approach (1=EP or 2=TV)`,
+      levels = c(1, 2),
+      labels = c("Extraperitoneal", "Transvesical")
+    ),
+
+    `HTN status (0=No or 1=Yes)` = factor(`HTN status (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `DM2 status (0=No or 1=Yes)` = factor(`DM2 status (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `HLD (0=No or 1=Yes)` = factor(`HLD (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `prior Inguinal Hernia/pelvic surgery (0=No or 1=Yes)` = factor(`prior Inguinal Hernia/pelvic surgery (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `Prior Abdominal Surgery (0=No or 1=Yes)` = factor(`Prior Abdominal Surgery (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+
+    `Pre-Op Biopsy Done (0=No 1=Yes)` = factor(`Pre-Op Biopsy Done (0=No 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `Pre-Op Biopsy Result (0=Neg 1=Pos)` = factor(`Pre-Op Biopsy Result (0=Neg 1=Pos)`, levels = c(0, 1), labels = c("Negative", "Positive")),
+    `Pre-Op Foley Present (0=No 1=Yes)` = factor(`Pre-Op Foley Present (0=No 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+
+    `Lymph Node Dissection (0=No or 1=Yes)` = factor(`Lymph Node Dissection (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `Conversion (0=No or 1=Yes)` = factor(`Conversion (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `Drain placement (0=No or 1=Yes)` = factor(`Drain placement (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `pRBCs given (0=No 1=Yes)` = factor(`pRBCs given (0=No 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+
+    `LOS (0=Same Day 1=Inpatient)` = factor(`LOS (0=Same Day 1=Inpatient)`, levels = c(0, 1), labels = c("Same Day", "Inpatient")),
+    `Narcotics (PO day 0-1) (0 = no, 1 = yes)` = factor(`Narcotics (PO day 0-1) (0 = no, 1 = yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `30-Day Readmission (0=No or 1=Yes)` = factor(`30-Day Readmission (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `Early Continence at 6 Weeks (0=No or 1=Yes) continent = no pads or 1 protection pad` =
+      factor(`Early Continence at 6 Weeks (0=No or 1=Yes) continent = no pads or 1 protection pad`,
+             levels = c(0, 1), labels = c("No", "Yes")),
+    `Continence 3 Months (0=No or 1=Yes)` = factor(`Continence 3 Months (0=No or 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+    `30 day Complications (0=no 1=Yes)` = factor(`30 day Complications (0=no 1=Yes)`, levels = c(0, 1), labels = c("No", "Yes")),
+
+    `ASA (1-5)` = factor(`ASA (1-5)`)
+  )
+
+baseline_labels <- list(
+  `Age (at time of surgery)` ~ "Age (yr)",
+  BMI ~ "BMI (kg/m^2)",
+  CCI ~ "CCI",
+  `ASA (1-5)` ~ "ASA physical status grading",
+  `HTN status (0=No or 1=Yes)` ~ "History of hypertension",
+  `DM2 status (0=No or 1=Yes)` ~ "History of type 2 diabetes mellitus",
+  `HLD (0=No or 1=Yes)` ~ "History of hyperlipidemia",
+  `prior Inguinal Hernia/pelvic surgery (0=No or 1=Yes)` ~ "History of prior inguinal/pelvic surgery",
+  `Prior Abdominal Surgery (0=No or 1=Yes)` ~ "History of prior abdominal surgery",
+  `Pre-op Hgb` ~ "Pre-op Hgb",
+  `Pre-op PSA` ~ "Pre-op PSA (ng/mL)",
+  `Pre-op Prostate Volume (g)` ~ "Prostate volume (ml)"
+)
+
+preop_labels <- list(
+  `SHIM Score (pre-op)` ~ "SHIM",
+  `IPSS (pre-op)` ~ "IPSS",
+  `QOL (pre-op)` ~ "QoL",
+  `Pre-Op Biopsy Done (0=No 1=Yes)` ~ "Biopsy done",
+  `Pre-Op Biopsy Result (0=Neg 1=Pos)` ~ "Malignancy on biopsy",
+  `Pre-Op Foley Present (0=No 1=Yes)` ~ "Pre-op foley placed"
+)
+
+intraop_labels <- list(
+  `Console Time (minutes)` ~ "Console time (minutes)",
+  `Operative Time (minutes)` ~ "Operative time (minutes)",
+  `EBL (cc)` ~ "Estimated blood loss (mL)",
+  `Conversion (0=No or 1=Yes)` ~ "Conversion to multiport",
+  `Lymph Node Dissection (0=No or 1=Yes)` ~ "Lymph node dissection",
+  `Drain placement (0=No or 1=Yes)` ~ "Drain placement",
+  `pRBCs given (0=No 1=Yes)` ~ "Blood units given",
+  `delta Hgb` ~ "dHgb (%)"
+)
+
+histology_labels <- list(
+  `Specimen Weight (g)` ~ "Specimen weight (g)",
+  `Specimen weight/pre-op estmated weight` ~ "Specimen wt/pre-op estimated wt",
+  `Pathologic Diagnosis (incidental malignancy) 0= benign 1= malignant` ~ "Incidental malignancy finding"
+)
+
+postop_care_labels <- list(
+  `LOS (0=Same Day 1=Inpatient)` ~ "Length of stay <24 hours",
+  `LOS (hours) (look at note times)` ~ "Average length of stay (hours)",
+  `Narcotics (PO day 0-1) (0 = no, 1 = yes)` ~ "Narcotics use post-op day 0-1",
+  `Postop Pain Score (PACU)` ~ "Post Op Pain Score",
+  `Foley Duration (Days post-op)` ~ "Foley catheter duration (days)"
+)
+
+outcome_labels <- list(
+  `30 day Complications (0=no 1=Yes)` ~ "30 day postoperative complications (Clavien >=2 only)",
+  `30-Day Readmission (0=No or 1=Yes)` ~ "30 day readmission",
+  `Post-op PVR` ~ "Post-op PVR",
+  `Early Continence at 6 Weeks (0=No or 1=Yes) continent = no pads or 1 protection pad` ~ "Early Continence at 4 weeks",
+  `Continence 3 Months (0=No or 1=Yes)` ~ "Continence at 3 months"
+)
+
+format_p <- function(x) {
+  dplyr::case_when(
+    is.na(x) ~ NA_character_,
+    x < 0.001 ~ "<0.001",
+    TRUE ~ formatC(x, format = "f", digits = 3)
+  )
+}
+
+safe_test <- function(data, group_var, var, continuous = FALSE) {
+  x <- data[[var]]
+  g <- data[[group_var]]
+  keep <- complete.cases(x, g)
+  x <- x[keep]
+  g <- g[keep]
+
+  if (length(unique(g)) < 2) {
+    return(list(p = NA_real_, test = NA_character_))
+  }
+
+  tryCatch({
+    if (continuous) {
+      p <- wilcox.test(x ~ g)$p.value
+      list(p = p, test = "Wilcoxon rank-sum")
+    } else {
+      tab <- table(x, g)
+      if (any(dim(tab) < 2)) {
+        return(list(p = NA_real_, test = NA_character_))
+      }
+      if (all(dim(tab) == c(2, 2))) {
+        p <- fisher.test(tab)$p.value
+        list(p = p, test = "Fisher's exact")
+      } else {
+        p <- suppressWarnings(chisq.test(tab, correct = FALSE)$p.value)
+        list(p = p, test = "Chi-square")
+      }
+    }
+  }, error = function(e) {
+    list(p = NA_real_, test = NA_character_)
+  })
+}
+
+calc_manual_stats <- function(data, group_var, vars, continuous_vars) {
+  map_dfr(vars, function(v) {
+    res <- safe_test(data, group_var, v, continuous = v %in% continuous_vars)
+    tibble(
+      variable = v,
+      manual_p = res$p,
+      manual_test = res$test
+    )
+  })
+}
+
+attach_manual_stats <- function(tbl, stats) {
+  tbl %>%
+    modify_table_body(
+      ~ .x %>%
+        left_join(stats, by = "variable") %>%
+        mutate(
+          p.value = if_else(row_type == "label", format_p(manual_p), NA_character_),
+          stat_test = if_else(row_type == "label", manual_test, NA_character_)
+        ) %>%
+        select(-manual_p, -manual_test)
+    ) %>%
+    modify_header(
+      p.value ~ "**P-value**",
+      stat_test ~ "**Test used**"
+    ) %>%
+    modify_column_unhide(c(p.value, stat_test))
+}
+
+make_tbl <- function(data, vars, labels, statistic, continuous_vars) {
+  stats <- calc_manual_stats(data, "approach", vars, continuous_vars)
+
+  data %>%
+    select(approach, all_of(vars)) %>%
+    tbl_summary(
+      by = approach,
+      label = labels,
+      statistic = statistic,
+      digits = all_continuous() ~ 1,
+      missing = "ifany"
+    ) %>%
+    attach_manual_stats(stats)
+}
+
+baseline_vars <- c(
+  "Age (at time of surgery)", "BMI", "CCI", "ASA (1-5)",
+  "HTN status (0=No or 1=Yes)", "DM2 status (0=No or 1=Yes)", "HLD (0=No or 1=Yes)",
+  "prior Inguinal Hernia/pelvic surgery (0=No or 1=Yes)",
+  "Prior Abdominal Surgery (0=No or 1=Yes)",
+  "Pre-op Hgb", "Pre-op PSA", "Pre-op Prostate Volume (g)"
+)
+baseline_cont <- c(
+  "Age (at time of surgery)", "BMI", "CCI",
+  "Pre-op Hgb", "Pre-op PSA", "Pre-op Prostate Volume (g)"
+)
+
+preop_vars <- c(
+  "SHIM Score (pre-op)", "IPSS (pre-op)", "QOL (pre-op)",
+  "Pre-Op Biopsy Done (0=No 1=Yes)",
+  "Pre-Op Biopsy Result (0=Neg 1=Pos)",
+  "Pre-Op Foley Present (0=No 1=Yes)"
+)
+preop_cont <- c("SHIM Score (pre-op)", "IPSS (pre-op)", "QOL (pre-op)")
+
+intraop_vars <- c(
+  "Console Time (minutes)", "Operative Time (minutes)", "EBL (cc)",
+  "Conversion (0=No or 1=Yes)",
+  "Lymph Node Dissection (0=No or 1=Yes)",
+  "Drain placement (0=No or 1=Yes)",
+  "pRBCs given (0=No 1=Yes)",
+  "delta Hgb"
+)
+intraop_cont <- c("Console Time (minutes)", "Operative Time (minutes)", "EBL (cc)", "delta Hgb")
+
+histology_vars <- c(
+  "Specimen Weight (g)",
+  "Specimen weight/pre-op estmated weight",
+  "Pathologic Diagnosis (incidental malignancy) 0= benign 1= malignant"
+)
+histology_cont <- c("Specimen Weight (g)", "Specimen weight/pre-op estmated weight")
+
+postop_care_vars <- c(
+  "LOS (0=Same Day 1=Inpatient)",
+  "LOS (hours) (look at note times)",
+  "Narcotics (PO day 0-1) (0 = no, 1 = yes)",
+  "Postop Pain Score (PACU)",
+  "Foley Duration (Days post-op)"
+)
+postop_care_cont <- c("LOS (hours) (look at note times)", "Postop Pain Score (PACU)", "Foley Duration (Days post-op)")
+
+outcome_vars <- c(
+  "30 day Complications (0=no 1=Yes)",
+  "30-Day Readmission (0=No or 1=Yes)",
+  "Post-op PVR",
+  "Early Continence at 6 Weeks (0=No or 1=Yes) continent = no pads or 1 protection pad",
+  "Continence 3 Months (0=No or 1=Yes)"
+)
+outcome_cont <- c("Post-op PVR")
+
+baseline_tbl <- make_tbl(
+  df,
+  vars = baseline_vars,
+  labels = baseline_labels,
+  statistic = list(
+    all_continuous() ~ "{mean} ({sd})",
+    `ASA (1-5)` ~ "{n} ({p}%)",
+    all_categorical() ~ "{n} ({p}%)"
+  ),
+  continuous_vars = baseline_cont
+)
+
+preop_tbl <- make_tbl(
+  df,
+  vars = preop_vars,
+  labels = preop_labels,
+  statistic = list(
+    c(`SHIM Score (pre-op)`, `IPSS (pre-op)`, `QOL (pre-op)`) ~ "{median} ({p25}, {p75})",
+    all_categorical() ~ "{n} ({p}%)"
+  ),
+  continuous_vars = preop_cont
+)
+
+intraop_tbl <- make_tbl(
+  df,
+  vars = intraop_vars,
+  labels = intraop_labels,
+  statistic = list(
+    all_continuous() ~ "{mean} ({sd})",
+    all_categorical() ~ "{n} ({p}%)"
+  ),
+  continuous_vars = intraop_cont
+)
+
+histology_tbl <- make_tbl(
+  df,
+  vars = histology_vars,
+  labels = histology_labels,
+  statistic = list(
+    all_continuous() ~ "{mean} ({sd})",
+    all_categorical() ~ "{n} ({p}%)"
+  ),
+  continuous_vars = histology_cont
+)
+
+postop_care_tbl <- make_tbl(
+  df,
+  vars = postop_care_vars,
+  labels = postop_care_labels,
+  statistic = list(
+    `LOS (hours) (look at note times)` ~ "{mean} ({sd})",
+    `Postop Pain Score (PACU)` ~ "{mean} ({sd})",
+    `Foley Duration (Days post-op)` ~ "{median} ({p25}, {p75})",
+    all_categorical() ~ "{n} ({p}%)"
+  ),
+  continuous_vars = postop_care_cont
+)
+
+outcomes_tbl <- make_tbl(
+  df,
+  vars = outcome_vars,
+  labels = outcome_labels,
+  statistic = list(
+    `Post-op PVR` ~ "{median} ({p25}, {p75})",
+    all_categorical() ~ "{n} ({p}%)"
+  ),
+  continuous_vars = outcome_cont
+)
+
+final_tbl_2 <- tbl_stack(
+  tbls = list(
+    baseline_tbl,
+    preop_tbl,
+    intraop_tbl,
+    histology_tbl,
+    postop_care_tbl,
+    outcomes_tbl
+  ),
+  group_header = c(
+    "Baseline characteristics",
+    "Pre-operative variables",
+    "Intraoperative parameters",
+    "Histopathology",
+    "Postoperative care",
+    "Postoperative outcomes"
+  )
+) %>%
+  modify_column_unhide(c(p.value, stat_test)) %>%
+  bold_labels()
+
+final_tbl_2
+
+```
+
+
+## Improving Aesthetics
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+
+final_tbl %>%
+  as_gt() %>%
+  gt::tab_style(
+    style = list(
+      gt::cell_text(weight = "bold"),
+      gt::cell_borders(
+        sides = c("top", "bottom"),
+        color = "black",
+        weight = gt::px(2)
+      )
+    ),
+    locations = gt::cells_row_groups()
+  ) %>%
+  gt::tab_options(
+    row_group.as_column = FALSE
+  )
+
+```
+
+
+
+# Session Info
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+Sys.time()
+
+sessionInfo()
+
+```
+
+
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+library(dplyr)
+library(ggplot2)
+library(tibble)
+library(viridis)
+library(RColorBrewer)
+
+data("mtcars")
+
+head(mtcars)
+
+data(iris)
+
+head(iris)
+
+summary(iris)
+
+iris %>%
+  count(Species)
+
+iris %>%
+  group_by(Species) %>%
+  summarise(
+    n = n(),
+    avg_sepal_length = mean(Sepal.Length),
+    avg_sepal_width  = mean(Sepal.Width),
+    avg_petal_length = mean(Petal.Length),
+    avg_petal_width  = mean(Petal.Width)
+  )
+
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point()
+
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  geom_point(size = 2) +
+  labs(
+    title = "Sepal Length vs Sepal Width",
+    subtitle = "Colored by species",
+    x = "Sepal Length",
+    y = "Sepal Width"
+  )
+
+ggplot(iris, aes(x = Petal.Length, y = Petal.Width, color = Species)) +
+  geom_point(size = 2) +
+  scale_color_viridis_d() +
+  theme_minimal() +
+  labs(
+    title = "Petal Dimensions by Species",
+    x = "Petal Length",
+    y = "Petal Width"
+  )
+
+
+iris2 <- iris %>%
+  mutate(Petal.Area = Petal.Length * Petal.Width)
+
+head(iris2)
+
+iris2 <- iris2 %>%
+  mutate(Sepal.Ratio = Sepal.Length / Sepal.Width)
+
+summary(iris2$Sepal.Ratio)
+
+
+ggplot(iris2, aes(
+  x = Sepal.Length,
+  y = Petal.Length,
+  color = Species,
+  size = Petal.Width
+)) +
+  geom_point(alpha = 0.8) +
+  scale_color_viridis_d() +
+  labs(
+    title = "A Multidimensional Plot",
+    subtitle = "Color = species, size = petal width",
+    x = "Sepal Length",
+    y = "Petal Length"
+  ) +
+  theme_minimal()
+
+ggplot(iris, aes(x = Petal.Length, y = Petal.Width)) +
+  geom_point(aes(color = Species), size = 2) +
+  facet_wrap(~Species) +
+  scale_color_viridis_d() +
+  theme_minimal() +
+  labs(
+    title = "Petal Size by Species",
+    x = "Petal Length",
+    y = "Petal Width"
+  )
+
+species_summary <- iris %>%
+  group_by(Species) %>%
+  summarise(
+    avg_petal_width = mean(Petal.Width),
+    avg_petal_length = mean(Petal.Length)
+  )
+
+species_summary
+
+
+ggplot(species_summary, aes(x = Species, y = avg_petal_width, fill = Species)) +
+  geom_col() +
+  scale_fill_viridis_d() +
+  theme_minimal() +
+  labs(
+    title = "Average Petal Width by Species",
+    x = "Species",
+    y = "Average Petal Width"
+  ) +
+  theme(legend.position = "none")
+
+iris %>%
+  filter(Sepal.Length > 5) %>%
+  mutate(Petal.Area = Petal.Length * Petal.Width) %>%
+  ggplot(aes(x = Sepal.Length, y = Petal.Area, color = Species, size = Sepal.Width)) +
+  geom_point(alpha = 0.7) +
+  scale_color_viridis_d() +
+  theme_minimal() +
+  labs(
+    title = "Challenge Plot",
+    x = "Sepal Length",
+    y = "Petal Area"
+  )
+
+```
+
+
+

@@ -1,5 +1,5 @@
 ---
-title: "Learning R through IRIS"
+title: "Learning R through iris"
 subtitle: "USC Biomedical Student Research Seminar"
 author: "Jonathan Nelson"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
