@@ -25,42 +25,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r packages, echo=T, error=FALSE, message=FALSE, warning=FALSE}
 
-if (!require("dplyr")) {install.packages("dplyr"); require("dplyr")}
-if (!require("Seurat")) {install.packages("Seurat"); require("Seurat")}
-# if (!require("SeuratDisk")) {install.packages("SeuratDisk"); require("SeuratDisk")}
-if (!require("knitr")) {install.packages("knitr"); require("knitr")}
-if (!require("ggplot2")) {install.packages("ggplot2"); require("ggplot2")}
-if (!requireNamespace('BiocManager', quietly = TRUE)) {install.packages('BiocManager'); require("BiocManager")}
-if (!require("here")) {install.packages("here"); require("here")}
-if (!require("paletteer")) {install.packages("paletteer"); require("paletteer")} # color palette
-if (!require("grDevices")) {install.packages("grDevices"); require("grDevices")} # for grDevices palette
-if (!require("tidyverse")) {install.packages("tidyverse"); require("tidyverse")} # for data frame transformation
-if (!require("tibble")) {install.packages("tibble"); require("tibble")} # for table transformation
-#if (!require("geneName")) {install.packages("geneName"); require("geneName")}
-if (!require("ggrepel")) {install.packages("ggrepel"); require("ggrepel")}
-if (!require("gghighlight")) {install.packages("gghighlight"); require("gghighlight")}
-if (!require("ggpmisc")) {install.packages("ggpmisc"); require("ggpmisc")}
-if (!require("ggupset")) {install.packages("ggupset"); require("ggupset")}
-if (!require("RColorBrewer")) {install.packages("RColorBrewer"); require("RColorBrewer")}
-if (!require("viridis")) {install.packages("viridis"); require("viridis")}
-if (!require("qs")) {install.packages("qs"); require("qs")}
-if (!require("arrow")) {install.packages("arrow"); require("arrow")}
-
-#setRepositories(ind = 1:3, addURLs = c('https://satijalab.r-universe.dev', 'https://bnprks.r-universe.dev/'))
-#install.packages(c("BPCells", "presto", "glmGamPoi"))
-
-#library(SeuratData)
-library(openxlsx)
-library(gplots)
-library(ggvenn)
-library(BPCells)
-library(presto)
-library(glmGamPoi)
 library(readxl)
-
-
-options(future.globals.maxSize = 64 * 1024^3) # 55 GB
-getOption("future.globals.maxSize") #59055800320
+library(dplyr)
+library(purrr)
+library(tibble)
+library(gtsummary)
+library(gt)
+library(ggplot2)
 
 ```
 
@@ -70,11 +41,7 @@ This code was generated for the **2026 Biomedical Research Seminar** at the Univ
 
 The analysis uses a de-identified dataset provided by Sammie Rosen. The dataset includes demographic, clinical, operative, histologic, and follow-up variables collected for patients undergoing **extraperitoneal versus transvesical simple prostatectomy**.
 
-## **Download** the files for this tutorial
-
-[**Download .zip file**](data/chart_review.zip)
-
-## Read in the dataset
+## Load in the Dataset
 
 ```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
 
@@ -129,7 +96,7 @@ df
 
 ## Let's Look at One of the Variables
 
-### Age at time of Surgery
+### Age at Time of Surgery
 
 ```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
 
@@ -153,12 +120,35 @@ wilcox.test(`Age (at time of surgery)` ~ approach, data = df)
 
 ```
 
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+summary_df <- df %>%
+  group_by(approach) %>%
+  summarise(
+    mean_age = mean(`Age (at time of surgery)`, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+ggplot(df, aes(x = approach, y = `Age (at time of surgery)`)) +
+  geom_jitter(width = 0.15, alpha = 0.6, size = 4) +
+  geom_point(
+    data = summary_df,
+    aes(x = approach, y = mean_age),
+    color = "red",
+    size = 6
+  ) +
+  labs(
+    x = "Approach",
+    y = "Age (at time of surgery)",
+    title = "Age Distribution by Surgical Approach (with Means)"
+  ) +
+  theme_classic()
+
+```
+
 #### Putting It Into a Table
 
 ```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
-
-library(dplyr)
-library(gt)
 
 # Summary stats
 age_summary <- df %>%
@@ -189,81 +179,10 @@ age_tbl %>%
   gt()
 
 ```
-
-### Age at time of Surgery
-
-```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
-
-df$`Age (at time of surgery)`
-
-```
-
-#### Calculate the Statistic
-
-```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
-
-df %>%
-  group_by(approach) %>%
-  summarise(
-    mean_age = mean(`Age (at time of surgery)`, na.rm = TRUE),
-    sd_age   = sd(`Age (at time of surgery)`, na.rm = TRUE),
-    .groups = "drop"
-  )
-
-wilcox.test(`Age (at time of surgery)` ~ approach, data = df)
-
-```
-
-#### Putting It Into a Table
-
-```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
-
-library(dplyr)
-library(gt)
-
-# Summary stats
-age_summary <- df %>%
-  group_by(approach) %>%
-  summarise(
-    mean = mean(`Age (at time of surgery)`, na.rm = TRUE),
-    sd   = sd(`Age (at time of surgery)`, na.rm = TRUE),
-    .groups = "drop"
-  )
-
-# Format into one row
-age_tbl <- tibble(
-  Variable = "Age (yr)",
-  Extraperitoneal = sprintf("%.1f (%.1f)",
-                            age_summary$mean[age_summary$approach == "Extraperitoneal"],
-                            age_summary$sd[age_summary$approach == "Extraperitoneal"]),
-  Transvesical = sprintf("%.1f (%.1f)",
-                         age_summary$mean[age_summary$approach == "Transvesical"],
-                         age_summary$sd[age_summary$approach == "Transvesical"]),
-  `P-value` = formatC(
-    wilcox.test(`Age (at time of surgery)` ~ approach, data = df)$p.value,
-    format = "f", digits = 3
-  ),
-  Test = "Wilcoxon rank-sum"
-)
-
-age_tbl %>%
-  gt()
-
-```
-
-
 
 ## Working Table
 
 ```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
-
-
-library(readxl)
-library(dplyr)
-library(purrr)
-library(tibble)
-library(gtsummary)
-library(gt)
 
 df <- read_excel("MASTER EP vs TV simples - deidentified.xlsx", sheet = "Sheet1") %>%
   mutate(
@@ -581,17 +500,129 @@ final_tbl
 
 ```
 
+## Breaking Down the Code
 
-## Table with Stats Info
+This script: <br>
+     1. Reads the data from Excel  <br>
+     2. Recodes raw 0/1 variables into readable categories  <br>
+     3. Groups variables into clinical sections  <br>
+     4. Builds summary statistics for each section  <br>
+     5. Computes p-values comparing the two surgical approaches  <br>
+     6. Combines everything into one polished table  <br>
+
+### Read the Excel File and Create New Variable
+
+```{r echo=TRUE, eval=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+df <- read_excel(...) %>%
+  mutate(...)
+
+```
+
+### Create Label Lists
+
+baseline_labels <br>
+preop_labels <br>
+intraop_labels <br>
+histology_labels <br>
+postop_care_labels <br>
+outcome_labels <br>
+
+```{r echo=TRUE, eval=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+`Age (at time of surgery)` ~ "Age (yr)"
+
+```
+
+### Format the p-value
+
+```{r echo=TRUE, eval=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+format_p <- function(x) { ... }
+
+```
+
+### Compute p-value safely
+
+This is the section that was the most challenging.
+
+#### Wilcox for continuous variable
+#### Fisher/Chi-squared for categorical variable
+
+```{r echo=TRUE, eval=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+safe_pvalue <- function(data, group_var, var, continuous = FALSE) { ... }
+
+wilcox.test(x ~ g)$p.value
+
+tab <- table(x, g)
+
+```
+
+### Build a p-value table for many variables
+
+```{r echo=TRUE, eval=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+calc_manual_pvals <- function(data, group_var, vars, continuous_vars) { ... }
+
+```
+
+### Attach p-values into the gtsummary table
+
+```{r echo=TRUE, eval=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+attach_manual_pvals <- function(tbl, pvals) { ... }
+
+```
+
+### Create a reusable table-making function
+
+```{r echo=TRUE, eval=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+make_tbl <- function(data, vars, labels, statistic, continuous_vars) { ... }
+
+```
+
+### Define which variables belong in each section
+
+```{r echo=TRUE, eval=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+make_tbl <- function(data, vars, labels, statistic, continuous_vars) { ... }
+
+```
+
+### Create each summary table section
+
+```{r echo=TRUE, eval=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+baseline_tbl <- make_tbl(...)
+
+```
+
+### Stack all sections into one final table
+
+```{r echo=TRUE, eval=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+final_tbl <- tbl_stack(
+  tbls = list(...)
+  group_header = c(...)
+)
+
+```
+
+### Display the final table
+
+```{r echo=TRUE, eval=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+final_tbl)
+
+```
+
+## Table with Statistics Info
+
+I wanted an indication of which statistic test was used for each comparison.
 
 ```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
-
-library(readxl)
-library(dplyr)
-library(purrr)
-library(tibble)
-library(gtsummary)
-library(gt)
 
 df <- read_excel("MASTER EP vs TV simples - deidentified.xlsx", sheet = "Sheet1") %>%
   mutate(
@@ -919,8 +950,7 @@ final_tbl_2
 
 ```
 
-
-## Improving Aesthetics
+## Improving Aesthetics of Table
 
 ```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
 
@@ -944,7 +974,18 @@ final_tbl %>%
 
 ```
 
+## Revise the Table Your Way
 
+1) Make the categories with significant differences red?
+2) Bold significant P values?
+3) Fix the kg/m^2 to actually be superscript in table?
+
+```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
+
+
+
+
+```
 
 # Session Info
 
@@ -955,136 +996,4 @@ Sys.time()
 sessionInfo()
 
 ```
-
-
-
-```{r echo=TRUE, warning=FALSE, error=FALSE, message=FALSE, fig.align = 'center'}
-
-library(dplyr)
-library(ggplot2)
-library(tibble)
-library(viridis)
-library(RColorBrewer)
-
-data("mtcars")
-
-head(mtcars)
-
-data(iris)
-
-head(iris)
-
-summary(iris)
-
-iris %>%
-  count(Species)
-
-iris %>%
-  group_by(Species) %>%
-  summarise(
-    n = n(),
-    avg_sepal_length = mean(Sepal.Length),
-    avg_sepal_width  = mean(Sepal.Width),
-    avg_petal_length = mean(Petal.Length),
-    avg_petal_width  = mean(Petal.Width)
-  )
-
-ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
-  geom_point()
-
-ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
-  geom_point(size = 2) +
-  labs(
-    title = "Sepal Length vs Sepal Width",
-    subtitle = "Colored by species",
-    x = "Sepal Length",
-    y = "Sepal Width"
-  )
-
-ggplot(iris, aes(x = Petal.Length, y = Petal.Width, color = Species)) +
-  geom_point(size = 2) +
-  scale_color_viridis_d() +
-  theme_minimal() +
-  labs(
-    title = "Petal Dimensions by Species",
-    x = "Petal Length",
-    y = "Petal Width"
-  )
-
-
-iris2 <- iris %>%
-  mutate(Petal.Area = Petal.Length * Petal.Width)
-
-head(iris2)
-
-iris2 <- iris2 %>%
-  mutate(Sepal.Ratio = Sepal.Length / Sepal.Width)
-
-summary(iris2$Sepal.Ratio)
-
-
-ggplot(iris2, aes(
-  x = Sepal.Length,
-  y = Petal.Length,
-  color = Species,
-  size = Petal.Width
-)) +
-  geom_point(alpha = 0.8) +
-  scale_color_viridis_d() +
-  labs(
-    title = "A Multidimensional Plot",
-    subtitle = "Color = species, size = petal width",
-    x = "Sepal Length",
-    y = "Petal Length"
-  ) +
-  theme_minimal()
-
-ggplot(iris, aes(x = Petal.Length, y = Petal.Width)) +
-  geom_point(aes(color = Species), size = 2) +
-  facet_wrap(~Species) +
-  scale_color_viridis_d() +
-  theme_minimal() +
-  labs(
-    title = "Petal Size by Species",
-    x = "Petal Length",
-    y = "Petal Width"
-  )
-
-species_summary <- iris %>%
-  group_by(Species) %>%
-  summarise(
-    avg_petal_width = mean(Petal.Width),
-    avg_petal_length = mean(Petal.Length)
-  )
-
-species_summary
-
-
-ggplot(species_summary, aes(x = Species, y = avg_petal_width, fill = Species)) +
-  geom_col() +
-  scale_fill_viridis_d() +
-  theme_minimal() +
-  labs(
-    title = "Average Petal Width by Species",
-    x = "Species",
-    y = "Average Petal Width"
-  ) +
-  theme(legend.position = "none")
-
-iris %>%
-  filter(Sepal.Length > 5) %>%
-  mutate(Petal.Area = Petal.Length * Petal.Width) %>%
-  ggplot(aes(x = Sepal.Length, y = Petal.Area, color = Species, size = Sepal.Width)) +
-  geom_point(alpha = 0.7) +
-  scale_color_viridis_d() +
-  theme_minimal() +
-  labs(
-    title = "Challenge Plot",
-    x = "Sepal Length",
-    y = "Petal Area"
-  )
-
-```
-
-
 

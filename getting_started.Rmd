@@ -41,7 +41,7 @@ This tutorial introduces foundational data analysis skills in R using the classi
 By building from simple summaries to more advanced plots and statistical tests, this guide emphasizes how different tools in R connect within a complete analytical pipeline. The goal is to provide learners with both the technical skills and conceptual understanding needed to explore, visualize, and interpret data effectively.
 
 ### Chart Review to `Table 1`
-#### [Explore the Guide](chart_review_table_v2.html)
+#### [Explore the Guide](chart_review_to_table.html)
 
 This tutorial walks through the process of transforming raw clinical chart review data into a polished “Table 1” summary using R. Designed for beginners and clinical researchers, it demonstrates how to clean and structure real-world data, derive meaningful variables, and generate publication-ready summary tables.
 
