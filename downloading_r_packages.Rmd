@@ -133,6 +133,8 @@ install.packages("dplyr")
 
 install.packages("ggplot2")
 
+install.packages("Seurat")
+
 ```
 
 # Installation Check
