@@ -1,0 +1,32 @@
+---
+title: ""
+output:
+  html_document: 
+    toc: no
+    toc_depth: 3
+    toc_float: true
+layout: page
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r load new packages, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE}
+
+if (!require("here")) {install.packages("here"); require("here")}
+```
+
+# **AIMS&#64;USC Publications** 
+
+<br>
+
+### Mapping cell neighborhoods within the kidney
+
+<img src="`r here::here("Images", "paper1.png")`"width="500px">
+
+#### [Link to Mansucript](https://pubmed.ncbi.nlm.nih.gov/42784335/)
+
+**AIMS&#64;USC investigator Jonathan Nelson** helped lead this collaboration with **AIMS&#64;USC team members Jesse Goodrich, Kelly Street, and Lu Zhang**. The study maps how cell types are spatially organized within the thick ascending limb, a nephron segment that helps the kidney regulate salt and other electrolytes. A spatial omics perspective adds an important dimension: it lets researchers ask not only which cell types are present, but where they are located in relation to one another within intact tissue. This map creates a foundation for exploring how cellular neighborhoods support kidney function, how those relationships may shift in disease, and which cells or local environments could merit closer study. The work also shows how **AIMS&#64;USC** brings together kidney biology, spatial data, and collaborative analysis to build a richer picture of the kidney.
+

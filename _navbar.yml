@@ -24,6 +24,9 @@ left:
 
   - text: "News"
     href: ./news.html
+    
+  - text: "Publications"
+    href: ./publications.html
 
   - text: "Join AIMS@USC"
     href: ./contact.html

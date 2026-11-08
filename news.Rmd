@@ -20,15 +20,65 @@ if (!require("here")) {install.packages("here"); require("here")}
 
 # **AIMS&#64;USC News** 
 
-## **March 1, 2026: Launch of AIMS&#64;USC**
+<br>
+
+## **Launch of AIMS&#64;USC**
+#### March 1, 2026
 
 **AIMS&#64;USC** officially launches on March 1, 2026, with generous support from the USC Office of Research and Innovation (OORI). This milestone marks the beginning of a coordinated institutional effort to advance AI-driven methods for spatial analysis across disciplines. With foundational backing from OORI, AIMS&#64;USC is positioned to catalyze innovation, foster cross-campus collaboration, and build shared computational infrastructure that empowers investigators working with complex spatial datasets.
 
-## **March 18, 2026: Inaugural Spatial Summit**
+## **Inaugural Spatial Summit**
+#### March 18, 2026
 
-On March 18, 2026, we will convene our first **Spatial Summit**, bringing together computational scientists, experimentalists, clinicians, and trainees to define priorities for spatial research at USC. This inaugural meeting will serve as both a showcase of ongoing projects and a collaborative think tank to shape methodological direction, data standards, and translational opportunities. The Summit represents our commitment to transparency, community engagement, and collective problem-solving as we accelerate progress in spatial science.
+We convened our first **Spatial Summit**, bringing together computational scientists, experimentalists, clinicians, and trainees to define priorities for spatial research at USC. This inaugural meeting will serve as both a showcase of ongoing projects and a collaborative think tank to shape methodological direction, data standards, and translational opportunities. The Summit represents our commitment to transparency, community engagement, and collective problem-solving as we accelerate progress in spatial science.
 
-## **April 1, 2026: 5th Zilkha Night Presentation**
+## **5th Zilkha Night Presentation**
+#### April 1, 2026
 
-On April 1, 2026, **AIMS&#64;USC** will present at the 5th Zilkha Night, highlighting early progress, institutional vision, and emerging opportunities in spatial and AI-driven biomedical research. This presentation provides an opportunity to share our mission with a broader audience, celebrate interdisciplinary collaboration, and demonstrate how methodological innovation can directly advance scientific discovery and translational impact across USC.
+**AIMS&#64;USC** will presented at the 5th Zilkha Night, highlighting early progress, institutional vision, and emerging opportunities in spatial and AI-driven biomedical research. This presentation provides an opportunity to share our mission with a broader audience, celebrate interdisciplinary collaboration, and demonstrate how methodological innovation can directly advance scientific discovery and translational impact across USC.
 
+## **2026 American Physiology Summit**
+#### April 23-26, 2026 
+
+At the 2026 American Physiology Summit, **AIMS&#64;USC investigator Jonathan Nelson** contributed to a collaborative study, presented orally by Jessica Bahena-López, Joshua Curry, and David Ellison mapping cell diversity in the kidney’s thick ascending limb (TAL). By combining spatial transcriptomics with prior single-nucleus RNA sequencing, the team identified three TAL cell types and mapped how they are distributed across kidney regions. The cells appeared in an intermingled mosaic pattern, with distinct distributions across cortical and medullary zones—showing how spatial omics can reveal organization that is difficult to see from cell identity alone. The meeting took place April 23–26 in Minneapolis.
+
+At the 2026 American Physiology Summit, Janos Peti-Peterdi highlighted collaborative work with **AIMS&#64;USC** investigators during his Carl W. Gottschalk Distinguished Lectureship. The research used spatial transcriptomics alongside single-nucleus RNA sequencing to map distinct cell types in the kidney’s thick ascending limb, showing how they are arranged across tissue regions. This collaboration brings spatial omics into conversation with renal physiology to reveal how kidney structure relates to function.
+
+## **2026 Biostatistics Thesis Award**
+#### May 16, 2026 
+
+In May 2026, Daniella Carrillo, a Biostatistics MS student advised by **AIMS&#64;USC member Kelly Street**, won first place for her master’s biostatistics thesis. Her research developed and evaluated statistical methods for testing whether particular cell types appear near one another more often than expected in spatial transcriptomics data. By accounting for overall tissue composition and reducing bias from same-type neighbors, her approach helps researchers detect cellular neighborhoods more accurately. The work highlights how AIMS&#64;USC collaboration can pair biostatistical method development with emerging spatial omics questions—and how that collaboration can create meaningful research opportunities for trainees.
+
+## **STATGEN 2026**
+#### May 18-20, 2026
+
+At STATGEN 2026, **AIMS&#64;USC member Lu Zhang** presented “Learning Interpretable Spatial Representations in Spatial Omics via Projected Bayesian Factor Models.” Spatial omics captures molecular activity while preserving its location in tissue, creating complex datasets that can be difficult to interpret. Zhang’s work develops a statistical modeling approach to represent these data in a more interpretable form, helping researchers examine spatial patterns in tissue organization and molecular activity. This methods-focused contribution highlights AIMS&#64;USC’s role in developing analytical tools that can support discovery across spatial biology.
+
+## **APS Kidney Camp**
+#### June 22–25, 2026
+
+**AIMS&#64;USC investigator Jonathan Nelson** spoke about spatial transcriptomics during the Omics session at the American Physiological Society’s Control of Renal Function in Health and Disease conference, known as Kidney Camp. Held June 22–25, 2026, in Fontana-on-Geneva Lake, Wisconsin, the conference brought together researchers focused on kidney physiology and disease. Nelson’s presentation introduced the kidney research community to how spatial transcriptomics connects gene activity with its location in tissue—helping researchers see where cell populations and molecular processes are organized within the kidney. Sharing these approaches supports wider use of spatial omics and creates opportunities for collaboration across the field.
+
+## **Joint Statistical Meetings**
+#### August 1–6, 2026 
+
+At the 2026 Joint Statistical Meetings, **AIMS&#64;USC member Lu Zhang** presented “Explainable Spatial Representation Learning for Spatial Transcriptomics Data.” The work develops a Bayesian modeling approach to find interpretable patterns in complex spatial gene-expression data. Applied to human kidney tissue, the method identified spatially organized molecular patterns and gene-level effects, while also providing a way to represent uncertainty in the results. This advances the analytical tools researchers can use to study how kidney tissue is organized and how its molecular patterns vary across space.
+
+## **AHHSA 2026: Advances in Human Health through Spatial Omics and AI**
+#### October 5-6, 2026
+
+At AHHSA 2026 **AIMS&#64;USC researcher Thomas Kowal** presented research mapping PFAS-induced kidney injury in mice. The meeting brought together researchers applying spatial and computational approaches to health questions. This work uses those methods to connect changes in gene activity with the specific kidney cells and tissue regions where they occur. 
+
+## **USC Transformative Center for Nanomedicine and Drug Delivery Symposium**
+#### October 8, 2026
+
+The third USC Transformative Center for Nanomedicine and Drug Delivery Symposium was held on October 8, 2026. **AIMS&#64;USC investigator Jonathan Nelson presented collaborative work developed with AIMS@USC colleagues Jesse Goodrich and Thomas Kowal**. Their collaboration reflects **AIMS&#64;USC’s** team-based approach to kidney research, bringing together expertise in kidney biology, spatial omics, and data analysis to build a more detailed picture of disease processes. Nelson’s presentation shared the team’s work with a broader community focused on translating discoveries into new therapeutic approaches.
+
+## **ASN Kidney Week**
+#### October 21–25, 2026
+
+At ASN Kidney Week 2026 in Denver **AIMS&#64;USC researcher Thomas Kowal, mentored by Jesse Goodrich,** presented work examining how PFAS exposure affects the kidney. By combining spatial transcriptomics with single-nucleus RNA sequencing, the team identified patterns of oxidative stress, cellular injury, and impaired tissue structure, including areas where injury appeared more pronounced. The findings illustrate how mapping molecular changes in their tissue locations can reveal details that may be missed when kidney tissue is analyzed as a whole.
+
+**AIMS&#64;USC investigator Jonathan Nelson** helped lead a collaborative study of cell diversity in the distal nephron, with Jessica Bahena-López. The team combined enriched single-nucleus RNA sequencing with immunostaining to distinguish cell populations along the connecting tubule, a segment between the distal convoluted tubule and collecting duct. Their results show a spatial progression from cells with stronger calcium-transport programs to cells with stronger water- and sodium-regulatory programs, with an intermediate population between them. This cellular map offers a more detailed view of how the distal nephron is organized and how its neighboring regions may specialize in different tasks.
+
+**AIMS&#64;USC investigator Jonathan Nelson** collaborated with Laura Perin and colleagues to study how glomerular endothelial cells change as Alport syndrome progresses. Using a mouse model, the team combined single-cell RNA sequencing, proteomics, lipidomics, and fluorescence lifetime imaging to follow metabolic changes across disease stages. By resolving changes within a specific kidney cell population and across disease progression, this work adds detail to how Alport syndrome affects the kidney beyond the podocyte and glomerular basement membrane.
